@@ -1,0 +1,24 @@
+<resources>
+    <style name="Theme.Default.Page" parent="Theme.MaterialComponents.DayNight">
+        <item name="android:background">@android:color/black</item>
+    </style>
+
+    <style name="Theme.Default.Images" parent="Theme.MaterialComponents.DayNight">
+        <item name="android:tint">@android:color/white</item>
+    </style>
+
+    <style name="Style.Text.Heading" parent="Theme.MaterialComponents.DayNight">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/heading_text_size</item>
+    </style>
+
+    <style name="Style.Text.Title" parent="Theme.MaterialComponents.DayNight">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/title_text_size</item>
+    </style>
+
+    <style name="Style.Text.SubTitle" parent="Theme.MaterialComponents.DayNight">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">@dimen/title_text_size</item>
+    </style>
+</resources>

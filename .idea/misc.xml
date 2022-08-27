@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.15625" />
+        <entry key="ui/src/main/res/layout/fragment_save_task.xml" value="0.15625" />
+        <entry key="ui/src/main/res/layout/fragment_task_list.xml" value="0.15625" />
+        <entry key="ui/src/main/res/layout/list_item_heading.xml" value="0.15625" />
+        <entry key="ui/src/main/res/layout/list_item_task.xml" value="0.15625" />
+        <entry key="ui/src/main/res/menu/task_overflow_menu.xml" value="0.15625" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
