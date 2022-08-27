@@ -16,6 +16,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
@@ -47,6 +48,12 @@ class TaskListViewModel @Inject constructor(
         )
     }
 
+    var updateJob : Job? = null
+
+    private fun updateList(list: MutableList<TaskListItem>) {
+        _taskList.postValue(list)
+    }
+
     fun loadData(forceUpdate: Boolean) {
         viewModelScope.launch(dispatcher) {
             _uiState.emit(TaskListUIState.ShowLoader)
@@ -60,7 +67,11 @@ class TaskListViewModel @Inject constructor(
                 } else {
                     _uiState.emit(TaskListUIState.HideEmptyView)
                 }
-                _taskList.postValue(it)
+
+                updateJob?.cancel()
+                updateJob = launch {
+                    updateList(it)
+                }
                 _uiState.emit(TaskListUIState.HideLoader)
             }.onFailure {
                 _uiState.emit(TaskListUIState.ShowMessage(R.string.message_error_loading_data))

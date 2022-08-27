@@ -3,7 +3,6 @@ package com.example.domain.repository
 import com.example.domain.contract.TaskRepositoryContract
 import com.example.domain.entity.Task
 import com.example.domain.exception.DataNotFoundException
-import kotlin.random.Random
 
 class FakeTaskRepository: TaskRepositoryContract {
 
@@ -32,7 +31,7 @@ class FakeTaskRepository: TaskRepositoryContract {
             Result.failure(Exception())
         } else {
             val newTask = if (task.taskId == null) {
-                task.copy(Random.nextInt(Integer.MAX_VALUE).toString())
+                task.copy(System.currentTimeMillis().toString())
             } else {
                 task
             }

@@ -19,16 +19,16 @@ class DBTaskDataSource @Inject constructor(private val taskDao: TaskDao): TaskDa
 
     override suspend fun updateTask(task: Task): Task? {
         taskDao.updateTask(task.fromDomainTask())
-        return taskDao.getTaskWithId(task.taskId!!.toInt())?.toDomainTask()
+        return taskDao.getTaskWithId(task.taskId!!.toLong())?.toDomainTask()
     }
 
-    override suspend fun getTaskWithId(id: String): Task? = taskDao.getTaskWithId(id.toInt())?.toDomainTask()
+    override suspend fun getTaskWithId(id: String): Task? = taskDao.getTaskWithId(id.toLong())?.toDomainTask()
 
-    override suspend fun removeTaskWithId(id: String) = taskDao.removeTaskWithId(id.toInt())
+    override suspend fun removeTaskWithId(id: String) = taskDao.removeTaskWithId(id.toLong())
 
-    override suspend fun pinTask(id: String) = taskDao.pinTask(id.toInt())
+    override suspend fun pinTask(id: String) = taskDao.pinTask(id.toLong())
 
-    override suspend fun unPinTask(id: String) = taskDao.unPinTask(id.toInt())
+    override suspend fun unPinTask(id: String) = taskDao.unPinTask(id.toLong())
 
     override suspend fun getAllTasks(): List<Task> = taskDao.getAllTasks().map { it.toDomainTask() }
 
