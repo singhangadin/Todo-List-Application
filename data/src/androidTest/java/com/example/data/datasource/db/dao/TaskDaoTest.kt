@@ -127,7 +127,7 @@ class TaskDaoTest {
         Assert.assertEquals(updatedTask!!.isPinned, false)
     }
 
-    private fun getTask(id: Int, title: String, description: String, isComplete: Boolean): Task = Task(
+    private fun getTask(id: Long, title: String, description: String, isComplete: Boolean): Task = Task(
         id, title, description, isComplete, Date(), Date()
     )
 

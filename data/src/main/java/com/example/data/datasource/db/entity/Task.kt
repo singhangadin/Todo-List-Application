@@ -11,7 +11,7 @@ import java.util.*
 data class Task (
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "task_id")
-    val taskId: Int ?= null,
+    val taskId: Long ?= null,
 
     @ColumnInfo(name = "task_title")
     val taskTitle: String = "",
@@ -30,7 +30,7 @@ data class Task (
 )
 
 fun com.example.domain.entity.Task.fromDomainTask(): Task = Task(
-    this.taskId?.toInt(),
+    this.taskId?.toLong(),
     this.taskTitle,
     this.taskDescription,
     this.isPinned,

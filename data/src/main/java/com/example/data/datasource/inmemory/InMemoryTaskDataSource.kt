@@ -6,7 +6,6 @@ import androidx.annotation.VisibleForTesting
 import kotlinx.coroutines.delay
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.random.Random
 
 @Singleton
 class InMemoryTaskDataSource @Inject constructor(): TaskDataSource {
@@ -17,7 +16,7 @@ class InMemoryTaskDataSource @Inject constructor(): TaskDataSource {
     override suspend fun insertTask(task: Task): Task? {
         return kotlin.runCatching {
             val newTask = if (task.taskId == null) {
-                task.copy(Random.nextInt(Integer.MAX_VALUE).toString())
+                task.copy(System.currentTimeMillis().toString())
             } else {
                 task
             }

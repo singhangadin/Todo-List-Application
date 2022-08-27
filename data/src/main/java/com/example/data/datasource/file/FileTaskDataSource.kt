@@ -10,7 +10,6 @@ import java.io.FileReader
 import java.io.FileWriter
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.random.Random
 
 @Singleton
 class FileTaskDataSource @Inject constructor(private val gson: Gson, private val filePath: String): TaskDataSource {
@@ -30,7 +29,7 @@ class FileTaskDataSource @Inject constructor(private val gson: Gson, private val
         }
 
         val newTask = if (task.taskId == null) {
-            val newTask = task.copy(taskId = Random.nextInt(Int.MAX_VALUE).toString())
+            val newTask = task.copy(taskId = System.currentTimeMillis().toString())
             taskWrapper.list.add(newTask)
             newTask
         } else {
@@ -40,6 +39,7 @@ class FileTaskDataSource @Inject constructor(private val gson: Gson, private val
 
         val fileWriter = FileWriter(file)
         fileWriter.write(gson.toJson(taskWrapper))
+        fileWriter.flush()
         fileWriter.close()
 
         delay(SERVICE_LATENCY_IN_MILLIS)
@@ -59,6 +59,7 @@ class FileTaskDataSource @Inject constructor(private val gson: Gson, private val
 
         val fileWriter = FileWriter(file)
         fileWriter.write(gson.toJson(taskWrapper))
+        fileWriter.flush()
         fileWriter.close()
 
         delay(SERVICE_LATENCY_IN_MILLIS)
@@ -77,6 +78,7 @@ class FileTaskDataSource @Inject constructor(private val gson: Gson, private val
 
         val fileWriter = FileWriter(file)
         fileWriter.write(gson.toJson(taskWrapper))
+        fileWriter.flush()
         fileWriter.close()
 
         delay(SERVICE_LATENCY_IN_MILLIS)
@@ -109,6 +111,7 @@ class FileTaskDataSource @Inject constructor(private val gson: Gson, private val
 
         val fileWriter = FileWriter(file)
         fileWriter.write(gson.toJson(taskWrapper))
+        fileWriter.flush()
         fileWriter.close()
         delay(SERVICE_LATENCY_IN_MILLIS)
     }
@@ -125,6 +128,7 @@ class FileTaskDataSource @Inject constructor(private val gson: Gson, private val
 
         val fileWriter = FileWriter(file)
         fileWriter.write(gson.toJson(taskWrapper))
+        fileWriter.flush()
         fileWriter.close()
         delay(SERVICE_LATENCY_IN_MILLIS)
     }
@@ -141,6 +145,7 @@ class FileTaskDataSource @Inject constructor(private val gson: Gson, private val
 
         val fileWriter = FileWriter(file)
         fileWriter.write(gson.toJson(taskWrapper))
+        fileWriter.flush()
         fileWriter.close()
         delay(SERVICE_LATENCY_IN_MILLIS)
     }
@@ -169,6 +174,7 @@ class FileTaskDataSource @Inject constructor(private val gson: Gson, private val
         delay(SERVICE_LATENCY_IN_MILLIS)
         val fileWriter = FileWriter(file)
         fileWriter.write(gson.toJson(TaskFileWrapper(mutableListOf())))
+        fileWriter.flush()
         fileWriter.close()
     }
 }

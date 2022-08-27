@@ -16,6 +16,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
@@ -45,6 +46,12 @@ class TaskListViewModel @Inject constructor(
             if (key) "Pinned" else "Tasks",
             null, key
         )
+    }
+
+    var updateJob : Job? = null
+
+    private fun updateList(list: MutableList<TaskListItem>) {
+        _taskList.postValue(list)
     }
 
     fun loadData(forceUpdate: Boolean) {
