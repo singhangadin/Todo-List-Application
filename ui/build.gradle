@@ -24,11 +24,6 @@ android {
         }
     }
 
-    sourceSets {
-        test.java.srcDirs += ["${project(':domain').projectDir}/src/test/java"]
-        androidTest.java.srcDirs += ["${project(':domain').projectDir}/src/androidTest/java"]
-    }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8

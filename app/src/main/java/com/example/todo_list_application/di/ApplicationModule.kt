@@ -2,17 +2,17 @@ package com.example.todo_list_application.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.data.common.AndroidLogService
-import com.example.data.common.CachedTaskRepository
-import com.example.data.common.DefaultTaskRepository
-import com.example.data.common.TaskDataSource
-import com.example.data.local.db.source.DBTaskDataSource
-import com.example.data.local.db.source.TodoDatabase
-import com.example.data.local.db.source.dao.TaskDao
+import com.example.data.repository.AndroidLogService
+import com.example.data.repository.CachedTaskRepository
+import com.example.data.repository.DefaultTaskRepository
+import com.example.data.datasource.base.TaskDataSource
+import com.example.data.datasource.db.DBTaskDataSource
+import com.example.data.datasource.db.TodoDatabase
+import com.example.data.datasource.db.dao.TaskDao
 import com.example.data.local.file.source.FileTaskDataSource
-import com.example.data.local.source.inmemory.InMemoryTaskDataSource
-import com.example.data.remote.network.source.RemoteTaskDataSource
-import com.example.data.remote.network.source.service.TodoService
+import com.example.data.datasource.inmemory.InMemoryTaskDataSource
+import com.example.data.datasource.remote.RemoteTaskDataSource
+import com.example.data.datasource.remote.service.TodoService
 import com.example.domain.contract.LogService
 import com.example.domain.contract.TaskRepositoryContract
 import com.google.gson.Gson
