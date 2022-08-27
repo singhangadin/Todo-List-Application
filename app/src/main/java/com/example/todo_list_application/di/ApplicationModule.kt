@@ -9,8 +9,7 @@ import com.example.data.datasource.base.TaskDataSource
 import com.example.data.datasource.db.DBTaskDataSource
 import com.example.data.datasource.db.TodoDatabase
 import com.example.data.datasource.db.dao.TaskDao
-import com.example.data.local.file.source.FileTaskDataSource
-import com.example.data.datasource.inmemory.InMemoryTaskDataSource
+import com.example.data.datasource.file.FileTaskDataSource
 import com.example.data.datasource.remote.RemoteTaskDataSource
 import com.example.data.datasource.remote.service.TodoService
 import com.example.domain.contract.LogService
@@ -87,7 +86,7 @@ class ApplicationModule {
     }
 
     @Provides
-    fun provideTaskRepository(ioDispatcher: CoroutineDispatcher, taskDataSource: InMemoryTaskDataSource, logService: LogService): DefaultTaskRepository {
+    fun provideTaskRepository(ioDispatcher: CoroutineDispatcher, taskDataSource: DBTaskDataSource, logService: LogService): DefaultTaskRepository {
         return DefaultTaskRepository(
             taskDataSource,
             logService,
@@ -128,12 +127,6 @@ class ApplicationModule {
     @Provides
     fun provideRemoteDataSource(todoService: TodoService): TaskDataSource {
         return RemoteTaskDataSource(todoService)
-    }
-
-    @Singleton
-    @Provides
-    fun provideInMemoryDataSource(): TaskDataSource {
-        return InMemoryTaskDataSource()
     }
 
     @Singleton

@@ -46,17 +46,7 @@ class SaveTaskFragment: Fragment() {
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { uiState ->
-                    when (uiState) {
-                        is SaveTaskUIState.HideLoader -> binding.progressLayout.visibility = View.GONE
-                        is SaveTaskUIState.ShowLoader -> binding.progressLayout.visibility = View.VISIBLE
 
-                        is SaveTaskUIState.ShowMessage ->
-                            Snackbar.make(binding.root, uiState.message, Snackbar.LENGTH_LONG).show()
-
-                        is SaveTaskUIState.Success -> activity?.onBackPressed()
-
-                        is SaveTaskUIState.ShowDatePicker -> showDatePicker()
-                    }
                 }
             }
         }

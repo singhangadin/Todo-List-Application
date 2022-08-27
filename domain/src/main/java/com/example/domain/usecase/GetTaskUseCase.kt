@@ -6,6 +6,6 @@ import javax.inject.Inject
 
 class GetTaskUseCase @Inject constructor(private val repository: TaskRepositoryContract) {
     suspend operator fun invoke(taskId: String): Result<Task> {
-        return repository.getTaskById(taskId)
+        TODO()
     }
 }

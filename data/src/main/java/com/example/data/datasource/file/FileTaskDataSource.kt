@@ -1,4 +1,4 @@
-package com.example.data.local.file.source
+package com.example.data.datasource.file
 
 import com.example.data.datasource.base.TaskDataSource
 import com.example.domain.entity.Task
@@ -13,8 +13,8 @@ import javax.inject.Singleton
 import kotlin.random.Random
 
 @Singleton
-class FileTaskDataSource @Inject constructor(private val gson: Gson, private val filePath: String):
-    TaskDataSource {
+class FileTaskDataSource @Inject constructor(private val gson: Gson, private val filePath: String): TaskDataSource {
+    private val SERVICE_LATENCY_IN_MILLIS = 2000L
 
     override suspend fun insertTask(task: Task): Task? {
         val file = File(filePath)
@@ -42,7 +42,7 @@ class FileTaskDataSource @Inject constructor(private val gson: Gson, private val
         fileWriter.write(gson.toJson(taskWrapper))
         fileWriter.close()
 
-        delay(2000)
+        delay(SERVICE_LATENCY_IN_MILLIS)
         return newTask
     }
 
@@ -61,7 +61,7 @@ class FileTaskDataSource @Inject constructor(private val gson: Gson, private val
         fileWriter.write(gson.toJson(taskWrapper))
         fileWriter.close()
 
-        delay(2000)
+        delay(SERVICE_LATENCY_IN_MILLIS)
     }
 
     override suspend fun updateTask(task: Task): Task? {
@@ -79,7 +79,7 @@ class FileTaskDataSource @Inject constructor(private val gson: Gson, private val
         fileWriter.write(gson.toJson(taskWrapper))
         fileWriter.close()
 
-        delay(2000)
+        delay(SERVICE_LATENCY_IN_MILLIS)
         return task
     }
 
@@ -90,10 +90,10 @@ class FileTaskDataSource @Inject constructor(private val gson: Gson, private val
             val content = reader.readText()
             val taskWrapper = gson.fromJson(content, TaskFileWrapper::class.java)
 
-            delay(2000)
+            delay(SERVICE_LATENCY_IN_MILLIS)
             taskWrapper.list.find { TextUtils.equals(it.taskId, id) }
         } else {
-            delay(2000)
+            delay(SERVICE_LATENCY_IN_MILLIS)
             null
         }
     }
@@ -110,7 +110,7 @@ class FileTaskDataSource @Inject constructor(private val gson: Gson, private val
         val fileWriter = FileWriter(file)
         fileWriter.write(gson.toJson(taskWrapper))
         fileWriter.close()
-        delay(2000)
+        delay(SERVICE_LATENCY_IN_MILLIS)
     }
 
     override suspend fun pinTask(id: String) {
@@ -126,7 +126,7 @@ class FileTaskDataSource @Inject constructor(private val gson: Gson, private val
         val fileWriter = FileWriter(file)
         fileWriter.write(gson.toJson(taskWrapper))
         fileWriter.close()
-        delay(2000)
+        delay(SERVICE_LATENCY_IN_MILLIS)
     }
 
     override suspend fun unPinTask(id: String) {
@@ -142,7 +142,7 @@ class FileTaskDataSource @Inject constructor(private val gson: Gson, private val
         val fileWriter = FileWriter(file)
         fileWriter.write(gson.toJson(taskWrapper))
         fileWriter.close()
-        delay(2000)
+        delay(SERVICE_LATENCY_IN_MILLIS)
     }
 
     override suspend fun getAllTasks(): List<Task> {
@@ -151,10 +151,10 @@ class FileTaskDataSource @Inject constructor(private val gson: Gson, private val
             val reader = FileReader(file)
             val content = reader.readText()
             val taskWrapper = gson.fromJson(content, TaskFileWrapper::class.java)
-            delay(2000)
+            delay(SERVICE_LATENCY_IN_MILLIS)
             return taskWrapper.list
         } else {
-            delay(2000)
+            delay(SERVICE_LATENCY_IN_MILLIS)
             return mutableListOf()
         }
     }
@@ -163,10 +163,10 @@ class FileTaskDataSource @Inject constructor(private val gson: Gson, private val
         val file = File(filePath)
         if (!file.exists()) {
             file.createNewFile()
-            delay(2000)
+            delay(SERVICE_LATENCY_IN_MILLIS)
             return
         }
-        delay(2000)
+        delay(SERVICE_LATENCY_IN_MILLIS)
         val fileWriter = FileWriter(file)
         fileWriter.write(gson.toJson(TaskFileWrapper(mutableListOf())))
         fileWriter.close()

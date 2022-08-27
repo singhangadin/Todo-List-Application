@@ -38,55 +38,14 @@ class SaveTaskViewModel @Inject constructor(
         if (taskId != null) {
             this.taskId.value = taskId
             viewModelScope.launch(dispatcher) {
-                _uiState.emit(SaveTaskUIState.ShowLoader)
-                val taskResult = getTaskUseCase.invoke(taskId)
-                if (taskResult.isSuccess) {
-                    val task = taskResult.getOrNull()!!
-                    taskTitle.postValue(task.taskTitle)
-                    taskDescription.postValue(task.taskDescription)
-                    endDate.postValue(task.endDate)
-                    _uiState.emit(SaveTaskUIState.HideLoader)
-                } else {
-                    _uiState.emit(SaveTaskUIState.HideLoader)
-                    _uiState.emit(SaveTaskUIState.ShowMessage(R.string.message_task_not_found))
-                }
+
             }
         }
     }
 
     fun saveTask() {
         viewModelScope.launch(dispatcher) {
-            _uiState.emit(SaveTaskUIState.ShowLoader)
-            val message = validateInput()
-            if (message == null) {
-                kotlin.runCatching {
-                    saveTaskUseCase.invoke(
-                        UpsertTaskUseCase.UseCaseParams(
-                            getUpsertTask(
-                                getTaskUseCase.invoke(
-                                    taskId.value ?: ""
-                                ).getOrNull()
-                            )
-                        )
-                    )
-                }.onSuccess {
-                    _uiState.emit(SaveTaskUIState.HideLoader)
-                    if (it.isSuccess) {
-                        _uiState.emit(SaveTaskUIState.ShowMessage(R.string.message_task_saved))
-                        _uiState.emit(SaveTaskUIState.Success)
-                    } else if (it.isFailure) {
-                        it.exceptionOrNull()?.printStackTrace()
-                        _uiState.emit(SaveTaskUIState.ShowMessage(R.string.message_error_saving_task))
-                    }
-                }.onFailure {
-                    it.printStackTrace()
-                    _uiState.emit(SaveTaskUIState.HideLoader)
-                    _uiState.emit(SaveTaskUIState.ShowMessage(R.string.message_error_saving_task))
-                }
-            } else {
-                _uiState.emit(SaveTaskUIState.HideLoader)
-                _uiState.emit(SaveTaskUIState.ShowMessage(message))
-            }
+
         }
     }
 
@@ -102,7 +61,7 @@ class SaveTaskViewModel @Inject constructor(
     }
 
     fun showDatePicker() = viewModelScope.launch(dispatcher) {
-        _uiState.emit(SaveTaskUIState.ShowDatePicker)
+
     }
 
     private fun validateInput(): Int? {

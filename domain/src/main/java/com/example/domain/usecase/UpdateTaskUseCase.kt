@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class UpdateTaskUseCase @Inject constructor(private val taskRepositoryContract: TaskRepositoryContract) {
     suspend operator fun invoke(params: UseCaseParams): Result<Task?> {
-        return taskRepositoryContract.updateTask(params.id, params.task)
+        TODO()
     }
 
     data class UseCaseParams(
