@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class UnPinTaskUseCase @Inject constructor(@DefaultRepository private val taskRepositoryContract: TaskRepositoryContract) {
     suspend operator fun invoke(params: UseCaseParams): Result<Unit> {
-        TODO()
+        return taskRepositoryContract.unPinTask(params.id)
     }
 
     data class UseCaseParams(
