@@ -50,7 +50,20 @@ class TaskListFragment : Fragment(), ListItemClickListener {
 
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-//                TODO
+                viewModel.uiState
+                    .onSubscription {
+                        viewModel.loadData(true)
+                    }
+                    .collect { uiState ->
+                        when (uiState) {
+                            is TaskListUIState.HideLoader -> hideLoader()
+                            is TaskListUIState.ShowLoader -> showLoader()
+                            is TaskListUIState.HideEmptyView -> hideEmptyView()
+                            is TaskListUIState.ShowEmptyView -> showEmptyView()
+                            is TaskListUIState.ShowMessage -> showMessage(uiState.message)
+                            is TaskListUIState.ShowSaveTaskScreen -> navigateToSaveTaskScreen(uiState.taskId)
+                        }
+                    }
             }
         }
 
