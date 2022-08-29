@@ -25,123 +25,31 @@ class CachedTaskRepository @Inject constructor(
     private var cachedTasks: ConcurrentMap<String, Task>? = null
 
     override suspend fun getTasks(forceUpdate: Boolean): Result<List<Task>> = withContext(ioDispatcher) {
-        if (forceUpdate) {
-            return@withContext try {
-                val tasks = tasksRemoteDataSource.getAllTasks()
-                refreshCache(tasks)
-                Result.success(tasks)
-            } catch (exception: Exception) {
-                Result.failure(exception)
-            }
-        } else {
-            cachedTasks?.let { cachedTasks ->
-                return@withContext Result.success(cachedTasks.values.toList())
-            }
-        }
-        return@withContext Result.failure(IllegalStateException())
+        TODO()
     }
 
     override suspend fun getTaskById(taskId: String): Result<Task> = withContext(ioDispatcher) {
-        return@withContext kotlin.runCatching {
-            if (cachedTasks?.get(taskId)!= null) {
-                cachedTasks?.get(taskId)!!
-            } else {
-                val task = tasksLocalDataSource.getTaskWithId(taskId)
-                task ?: throw DataNotFoundException()
-            }
-        }.onSuccess {
-            Result.success(it)
-        }.onFailure {
-            logService.logException(this@CachedTaskRepository.javaClass.name, it)
-            Result.failure<Throwable>(it)
-        }
+        TODO()
     }
 
     override suspend fun createNewTask(task: Task): Result<Task?> = withContext(ioDispatcher) {
-        return@withContext kotlin.runCatching {
-            tasksRemoteDataSource.insertTask(task)?.let {
-                tasksLocalDataSource.insertTask(it)
-                cacheTask(it)
-            }
-        }.onSuccess {
-            Result.success(it)
-        }.onFailure {
-            logService.logException(this@CachedTaskRepository.javaClass.name, it)
-            Result.failure<Throwable>(it)
-        }
+        TODO()
     }
 
     override suspend fun deleteTask(taskId: String): Result<Unit> = withContext(ioDispatcher){
-        return@withContext kotlin.runCatching {
-            val task = tasksRemoteDataSource.getTaskWithId(taskId)
-            if (task != null) {
-                cachedTasks?.remove(taskId)
-                tasksLocalDataSource.removeTaskWithId(taskId)
-                tasksRemoteDataSource.removeTaskWithId(taskId)
-            } else {
-                throw DataNotFoundException()
-            }
-        }.onSuccess {
-            Result.success(it)
-        }.onFailure {
-            logService.logException(this@CachedTaskRepository.javaClass.name, it)
-            Result.failure<Throwable>(it)
-        }
+        TODO()
     }
 
     override suspend fun updateTask(taskId: String, task: Task): Result<Task?> = withContext(ioDispatcher) {
-        return@withContext kotlin.runCatching {
-            val savedTask = tasksRemoteDataSource.getTaskWithId(taskId)
-            if (savedTask != null) {
-                tasksRemoteDataSource.updateTask(task)
-                tasksLocalDataSource.updateTask(task)
-                cacheTask(task)
-            } else {
-                throw DataNotFoundException()
-            }
-        }.onSuccess {
-            Result.success(it)
-        }.onFailure {
-            logService.logException(this@CachedTaskRepository.javaClass.name, it)
-            Result.failure<Throwable>(it)
-        }
+        TODO()
     }
 
     override suspend fun pinTask(taskId: String): Result<Unit> = withContext(ioDispatcher) {
-        return@withContext kotlin.runCatching {
-            val savedTask = tasksRemoteDataSource.getTaskWithId(taskId)
-            if (savedTask != null) {
-                tasksRemoteDataSource.pinTask(taskId)
-                tasksLocalDataSource.pinTask(taskId)
-                cacheTask(savedTask.copy(isPinned = true))
-                Unit
-            } else {
-                throw DataNotFoundException()
-            }
-        }.onSuccess {
-            Result.success(it)
-        }.onFailure {
-            logService.logException(this@CachedTaskRepository.javaClass.name, it)
-            Result.failure<Throwable>(it)
-        }
+        TODO()
     }
 
     override suspend fun unPinTask(taskId: String): Result<Unit> = withContext(ioDispatcher) {
-        return@withContext kotlin.runCatching {
-            val savedTask = tasksRemoteDataSource.getTaskWithId(taskId)
-            if (savedTask != null) {
-                cacheTask(savedTask.copy(isPinned = false))
-                tasksRemoteDataSource.unPinTask(taskId)
-                tasksLocalDataSource.unPinTask(taskId)
-            } else {
-                throw DataNotFoundException()
-            }
-        }.onSuccess {
-            Result.success(it)
-        }.onFailure {
-            logService.logException(this@CachedTaskRepository.javaClass.name, it)
-            Result.failure<Throwable>(it)
-        }
+        TODO()
     }
 
     private fun refreshCache(tasks: List<Task>) {
