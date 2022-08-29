@@ -87,14 +87,27 @@ class ApplicationModule {
         return todoDatabase.getTaskDao()
     }
 
+    @Singleton
     @Provides
     @DefaultRepository
-    fun provideTaskRepository(ioDispatcher: CoroutineDispatcher, taskDataSource: InMemoryTaskDataSource, logService: LogService): TaskRepositoryContract {
+    fun provideTaskRepository(ioDispatcher: CoroutineDispatcher, @FileDataSource taskDataSource: TaskDataSource, logService: LogService): TaskRepositoryContract {
         return DefaultTaskRepository(
             taskDataSource,
             logService,
             ioDispatcher
         )
+    }
+
+    @Singleton
+    @Provides
+    @CacheRepository
+    fun provideCacheRepository(
+        @DBDataSource tasksLocalDataSource: TaskDataSource,
+        @FileDataSource tasksRemoteDataSource: TaskDataSource,
+        logService: LogService,
+        ioDispatcher: CoroutineDispatcher
+    ): TaskRepositoryContract {
+        return CachedTaskRepository(tasksLocalDataSource, tasksRemoteDataSource, logService, ioDispatcher)
     }
 
     @Singleton
@@ -119,14 +132,9 @@ class ApplicationModule {
 
     @Singleton
     @Provides
-    @CacheRepository
-    fun provideCacheRepository(
-        @DBDataSource tasksLocalDataSource: TaskDataSource,
-        @FileDataSource tasksRemoteDataSource: TaskDataSource,
-        logService: LogService,
-        ioDispatcher: CoroutineDispatcher
-    ): TaskRepositoryContract {
-        return CachedTaskRepository(tasksLocalDataSource, tasksRemoteDataSource, logService, ioDispatcher)
+    @InMemoryDataSource
+    fun provideInMemoryDataSource(): TaskDataSource {
+        return InMemoryTaskDataSource()
     }
 
 //    @Singleton
@@ -134,13 +142,6 @@ class ApplicationModule {
 //    fun provideRemoteDataSource(todoService: TodoService): TaskDataSource {
 //        return RemoteTaskDataSource(todoService)
 //    }
-
-    @Singleton
-    @Provides
-    @InMemoryDataSource
-    fun provideInMemoryDataSource(): TaskDataSource {
-        return InMemoryTaskDataSource()
-    }
 
     @Singleton
     @Provides
