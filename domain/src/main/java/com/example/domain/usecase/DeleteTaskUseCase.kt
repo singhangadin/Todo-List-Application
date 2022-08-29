@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class DeleteTaskUseCase @Inject constructor(@DefaultRepository private val taskRepositoryContract: TaskRepositoryContract) {
     suspend operator fun invoke(params: UseCaseParams): Result<Unit> {
-        TODO()
+        return taskRepositoryContract.deleteTask(params.id)
     }
 
     data class UseCaseParams(
