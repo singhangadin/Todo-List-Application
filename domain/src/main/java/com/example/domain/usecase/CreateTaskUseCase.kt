@@ -8,7 +8,15 @@ import javax.inject.Inject
 
 class CreateTaskUseCase @Inject constructor(@DefaultRepository private val taskRepositoryContract: TaskRepositoryContract) {
     suspend operator fun invoke(params: UseCaseParams): Result<Task?> {
-        TODO()
+        val task = Task(
+            taskTitle = params.title,
+            taskDescription = params.description,
+            isPinned = false,
+            endDate = params.endDate,
+            createdAt = Date(),
+            taskId = null
+        )
+        return taskRepositoryContract.createNewTask(task)
     }
 
     data class UseCaseParams(
