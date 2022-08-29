@@ -2,6 +2,7 @@ package com.example.todo_list_application.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.common.*
 import com.example.data.repository.AndroidLogService
 import com.example.data.repository.CachedTaskRepository
 import com.example.data.repository.DefaultTaskRepository
@@ -10,6 +11,7 @@ import com.example.data.datasource.db.DBTaskDataSource
 import com.example.data.datasource.db.TodoDatabase
 import com.example.data.datasource.db.dao.TaskDao
 import com.example.data.datasource.file.FileTaskDataSource
+import com.example.data.datasource.inmemory.InMemoryTaskDataSource
 import com.example.data.datasource.remote.RemoteTaskDataSource
 import com.example.data.datasource.remote.service.TodoService
 import com.example.domain.contract.LogService
@@ -49,7 +51,7 @@ class ApplicationModule {
         return OkHttpClient.Builder()
             .addInterceptor { chain ->
                 chain.request().newBuilder()
-                    .addHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzAxYzViZmI5MDEyMjAwMTdhNDVlYjciLCJpYXQiOjE2NjEwNjA1NDN9.ZeRVCYkt-pqRc6VIDIYy5ynwnZpttppSMRZquVHPh0M")
+                    .addHeader("Authorization", "Bearer <Auth Token>") // TODO: ADD AUTH TOKEN HERE
                     .build()
                     .let(chain::proceed)
             }
@@ -85,13 +87,27 @@ class ApplicationModule {
         return todoDatabase.getTaskDao()
     }
 
+    @Singleton
     @Provides
-    fun provideTaskRepository(ioDispatcher: CoroutineDispatcher, taskDataSource: DBTaskDataSource, logService: LogService): DefaultTaskRepository {
+    @DefaultRepository
+    fun provideTaskRepository(ioDispatcher: CoroutineDispatcher, @FileDataSource taskDataSource: TaskDataSource, logService: LogService): TaskRepositoryContract {
         return DefaultTaskRepository(
             taskDataSource,
             logService,
             ioDispatcher
         )
+    }
+
+    @Singleton
+    @Provides
+    @CacheRepository
+    fun provideCacheRepository(
+        @DBDataSource tasksLocalDataSource: TaskDataSource,
+        @FileDataSource tasksRemoteDataSource: TaskDataSource,
+        logService: LogService,
+        ioDispatcher: CoroutineDispatcher
+    ): TaskRepositoryContract {
+        return CachedTaskRepository(tasksLocalDataSource, tasksRemoteDataSource, logService, ioDispatcher)
     }
 
     @Singleton
@@ -102,32 +118,30 @@ class ApplicationModule {
 
     @Singleton
     @Provides
-    fun provideDBTaskDataSource(taskDao: TaskDao): DBTaskDataSource {
+    @DBDataSource
+    fun provideDBTaskDataSource(taskDao: TaskDao): TaskDataSource {
         return DBTaskDataSource(taskDao)
     }
 
     @Singleton
     @Provides
-    fun provideFileTaskDataSource(gson: Gson, @ApplicationContext context: Context): FileTaskDataSource {
+    @FileDataSource
+    fun provideFileTaskDataSource(gson: Gson, @ApplicationContext context: Context): TaskDataSource {
         return FileTaskDataSource(gson, context.filesDir.path + "/tasks.txt")
     }
 
     @Singleton
     @Provides
-    fun provideCacheRepository(
-        tasksLocalDataSource: DBTaskDataSource,
-        tasksRemoteDataSource: FileTaskDataSource,
-        logService: LogService,
-        ioDispatcher: CoroutineDispatcher
-    ): TaskRepositoryContract {
-        return CachedTaskRepository(tasksLocalDataSource, tasksRemoteDataSource, logService, ioDispatcher)
+    @InMemoryDataSource
+    fun provideInMemoryDataSource(): TaskDataSource {
+        return InMemoryTaskDataSource()
     }
 
-    @Singleton
-    @Provides
-    fun provideRemoteDataSource(todoService: TodoService): TaskDataSource {
-        return RemoteTaskDataSource(todoService)
-    }
+//    @Singleton
+//    @Provides
+//    fun provideRemoteDataSource(todoService: TodoService): TaskDataSource {
+//        return RemoteTaskDataSource(todoService)
+//    }
 
     @Singleton
     @Provides
