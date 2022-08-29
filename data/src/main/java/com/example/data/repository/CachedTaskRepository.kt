@@ -27,6 +27,10 @@ class CachedTaskRepository @Inject constructor(
         if (forceUpdate) {
             return@withContext try {
                 val tasks = tasksRemoteDataSource.getAllTasks()
+                tasksLocalDataSource.deleteAllTasks()
+                for (task in tasks) {
+                    tasksLocalDataSource.insertTask(task)
+                }
                 refreshCache(tasks)
                 Result.success(tasks)
             } catch (exception: Exception) {
