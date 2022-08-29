@@ -2,6 +2,7 @@ package com.example.todo_list_application.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.common.*
 import com.example.data.repository.AndroidLogService
 import com.example.data.repository.CachedTaskRepository
 import com.example.data.repository.DefaultTaskRepository
@@ -87,7 +88,8 @@ class ApplicationModule {
     }
 
     @Provides
-    fun provideTaskRepository(ioDispatcher: CoroutineDispatcher, taskDataSource: InMemoryTaskDataSource, logService: LogService): DefaultTaskRepository {
+    @DefaultRepository
+    fun provideTaskRepository(ioDispatcher: CoroutineDispatcher, taskDataSource: InMemoryTaskDataSource, logService: LogService): TaskRepositoryContract {
         return DefaultTaskRepository(
             taskDataSource,
             logService,
@@ -103,35 +105,39 @@ class ApplicationModule {
 
     @Singleton
     @Provides
-    fun provideDBTaskDataSource(taskDao: TaskDao): DBTaskDataSource {
+    @DBDataSource
+    fun provideDBTaskDataSource(taskDao: TaskDao): TaskDataSource {
         return DBTaskDataSource(taskDao)
     }
 
     @Singleton
     @Provides
-    fun provideFileTaskDataSource(gson: Gson, @ApplicationContext context: Context): FileTaskDataSource {
+    @FileDataSource
+    fun provideFileTaskDataSource(gson: Gson, @ApplicationContext context: Context): TaskDataSource {
         return FileTaskDataSource(gson, context.filesDir.path + "/tasks.txt")
     }
 
     @Singleton
     @Provides
+    @CacheRepository
     fun provideCacheRepository(
-        tasksLocalDataSource: DBTaskDataSource,
-        tasksRemoteDataSource: FileTaskDataSource,
+        @DBDataSource tasksLocalDataSource: TaskDataSource,
+        @FileDataSource tasksRemoteDataSource: TaskDataSource,
         logService: LogService,
         ioDispatcher: CoroutineDispatcher
     ): TaskRepositoryContract {
         return CachedTaskRepository(tasksLocalDataSource, tasksRemoteDataSource, logService, ioDispatcher)
     }
 
-    @Singleton
-    @Provides
-    fun provideRemoteDataSource(todoService: TodoService): TaskDataSource {
-        return RemoteTaskDataSource(todoService)
-    }
+//    @Singleton
+//    @Provides
+//    fun provideRemoteDataSource(todoService: TodoService): TaskDataSource {
+//        return RemoteTaskDataSource(todoService)
+//    }
 
     @Singleton
     @Provides
+    @InMemoryDataSource
     fun provideInMemoryDataSource(): TaskDataSource {
         return InMemoryTaskDataSource()
     }

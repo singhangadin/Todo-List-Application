@@ -1,5 +1,8 @@
 package com.example.data.repository
 
+import com.example.common.DBDataSource
+import com.example.common.FileDataSource
+import com.example.data.datasource.base.TaskDataSource
 import com.example.data.datasource.db.DBTaskDataSource
 import com.example.data.datasource.file.FileTaskDataSource
 import com.example.domain.contract.LogService
@@ -16,8 +19,8 @@ import javax.inject.Singleton
 
 @Singleton
 class CachedTaskRepository @Inject constructor(
-    private val tasksLocalDataSource: DBTaskDataSource,
-    private val tasksRemoteDataSource: FileTaskDataSource,   // MockRemote Source
+    @DBDataSource private val tasksLocalDataSource: TaskDataSource,
+    @FileDataSource private val tasksRemoteDataSource: TaskDataSource,   // MockRemote Source
     private val logService: LogService,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ): TaskRepositoryContract {

@@ -1,9 +1,10 @@
 package com.example.domain.usecase
 
+import com.example.common.DefaultRepository
 import com.example.domain.contract.TaskRepositoryContract
 import javax.inject.Inject
 
-class DeleteTaskUseCase @Inject constructor(private val taskRepositoryContract: TaskRepositoryContract) {
+class DeleteTaskUseCase @Inject constructor(@DefaultRepository private val taskRepositoryContract: TaskRepositoryContract) {
     suspend operator fun invoke(params: UseCaseParams): Result<Unit> {
         return taskRepositoryContract.deleteTask(params.id)
     }

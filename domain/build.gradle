@@ -10,6 +10,9 @@ java {
 
 dependencies {
     def coroutines_version = "1.6.4"
+
+    implementation project(path: ':common')
+
     implementation 'javax.inject:javax.inject:1'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
 

@@ -1,5 +1,6 @@
 package com.example.data.repository
 
+import com.example.common.DBDataSource
 import com.example.data.datasource.base.TaskDataSource
 import com.example.domain.contract.LogService
 import com.example.domain.contract.TaskRepositoryContract
@@ -13,7 +14,7 @@ import javax.inject.Singleton
 
 @Singleton
 class DefaultTaskRepository @Inject constructor(
-    private val taskDataSource: TaskDataSource,
+    @DBDataSource private val taskDataSource: TaskDataSource,
     private val logService: LogService,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ): TaskRepositoryContract {
