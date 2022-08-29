@@ -13,6 +13,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.common.DefaultDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -28,7 +29,7 @@ class TaskListViewModel @Inject constructor(
     private val pinTaskUseCase: PinTaskUseCase,
     private val unPinTaskUseCase: UnPinTaskUseCase,
     private val deleteTaskUseCase: DeleteTaskUseCase,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.Default
+    @DefaultDispatcher private val dispatcher: CoroutineDispatcher = Dispatchers.Default
 ): ViewModel() {
     private val _taskList = MutableLiveData<List<TaskListItem>>()
 

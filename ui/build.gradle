@@ -44,6 +44,7 @@ dependencies {
 
     // Local Modules
     implementation project(path: ':domain')
+    implementation project(path: ':common')
 
     // Core
     implementation 'androidx.core:core-ktx:1.8.0'
