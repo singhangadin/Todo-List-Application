@@ -50,7 +50,7 @@ class ApplicationModule {
         return OkHttpClient.Builder()
             .addInterceptor { chain ->
                 chain.request().newBuilder()
-                    .addHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzAxYzViZmI5MDEyMjAwMTdhNDVlYjciLCJpYXQiOjE2NjEwNjA1NDN9.ZeRVCYkt-pqRc6VIDIYy5ynwnZpttppSMRZquVHPh0M")
+                    .addHeader("Authorization", "Bearer <Auth Token>") // TODO: ADD AUTH TOKEN HERE
                     .build()
                     .let(chain::proceed)
             }
