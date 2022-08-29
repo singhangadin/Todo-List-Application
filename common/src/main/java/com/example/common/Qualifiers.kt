@@ -21,3 +21,11 @@ annotation class DefaultRepository
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class CacheRepository
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class IODispatcher
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class DefaultDispatcher

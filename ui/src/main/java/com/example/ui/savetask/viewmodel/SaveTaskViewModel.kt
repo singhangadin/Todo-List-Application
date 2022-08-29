@@ -8,6 +8,7 @@ import com.example.ui.savetask.uistate.SaveTaskUIState
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.common.DefaultDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -21,7 +22,7 @@ import javax.inject.Inject
 class SaveTaskViewModel @Inject constructor(
         private val saveTaskUseCase: UpsertTaskUseCase,
         private val getTaskUseCase: GetTaskUseCase,
-        private val dispatcher: CoroutineDispatcher = Dispatchers.Default
+        @DefaultDispatcher private val dispatcher: CoroutineDispatcher = Dispatchers.Default
 ): ViewModel() {
     private val taskId = MutableLiveData<String>()
     val taskTitle = MutableLiveData<String>()

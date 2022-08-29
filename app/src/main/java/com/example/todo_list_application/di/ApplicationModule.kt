@@ -37,16 +37,6 @@ class ApplicationModule {
 
     @Singleton
     @Provides
-    fun provideRoomDatabase(@ApplicationContext context: Context): TodoDatabase {
-        return Room.databaseBuilder(
-            context,
-            TodoDatabase::class.java,
-            "todo_database"
-        ).build()
-    }
-
-    @Singleton
-    @Provides
     fun provideOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor { chain ->
@@ -77,8 +67,26 @@ class ApplicationModule {
 
     @Singleton
     @Provides
+    fun provideRoomDatabase(@ApplicationContext context: Context): TodoDatabase {
+        return Room.databaseBuilder(
+            context,
+            TodoDatabase::class.java,
+            "todo_database"
+        ).build()
+    }
+
+    @Singleton
+    @Provides
+    @IODispatcher
     fun provideIODispatcher(): CoroutineDispatcher {
         return Dispatchers.IO
+    }
+
+    @Singleton
+    @Provides
+    @DefaultDispatcher
+    fun provideDefaultDispatcher(): CoroutineDispatcher {
+        return Dispatchers.Default
     }
 
     @Singleton
@@ -90,7 +98,7 @@ class ApplicationModule {
     @Singleton
     @Provides
     @DefaultRepository
-    fun provideTaskRepository(ioDispatcher: CoroutineDispatcher, @FileDataSource taskDataSource: TaskDataSource, logService: LogService): TaskRepositoryContract {
+    fun provideTaskRepository(@IODispatcher ioDispatcher: CoroutineDispatcher, @FileDataSource taskDataSource: TaskDataSource, logService: LogService): TaskRepositoryContract {
         return DefaultTaskRepository(
             taskDataSource,
             logService,
@@ -104,8 +112,8 @@ class ApplicationModule {
     fun provideCacheRepository(
         @DBDataSource tasksLocalDataSource: TaskDataSource,
         @FileDataSource tasksRemoteDataSource: TaskDataSource,
-        logService: LogService,
-        ioDispatcher: CoroutineDispatcher
+        @IODispatcher ioDispatcher: CoroutineDispatcher,
+        logService: LogService
     ): TaskRepositoryContract {
         return CachedTaskRepository(tasksLocalDataSource, tasksRemoteDataSource, logService, ioDispatcher)
     }
