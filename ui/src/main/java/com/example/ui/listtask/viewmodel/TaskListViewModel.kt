@@ -56,7 +56,7 @@ class TaskListViewModel @Inject constructor(
 
     fun loadData(forceUpdate: Boolean) {
         viewModelScope.launch(dispatcher) {
-
+            TODO()
         }
     }
 
@@ -77,31 +77,31 @@ class TaskListViewModel @Inject constructor(
 
     fun createNewTask() {
         viewModelScope.launch(dispatcher) {
-
+//            TODO
         }
     }
 
     fun updateTask(taskId: String) {
         viewModelScope.launch(dispatcher) {
-
+            TODO()
         }
     }
 
     fun deleteTask(taskId: String) {
         viewModelScope.launch(dispatcher) {
-
+            TODO()
         }
     }
 
     fun pinItem(taskId: String) {
         viewModelScope.launch(dispatcher) {
-
+            TODO()
         }
     }
 
     fun unPinItem(taskId: String) {
         viewModelScope.launch(dispatcher) {
-
+            TODO()
         }
     }
 }

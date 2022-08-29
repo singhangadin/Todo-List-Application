@@ -50,7 +50,7 @@ class TaskListFragment : Fragment(), ListItemClickListener {
 
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-
+//                TODO
             }
         }
 
