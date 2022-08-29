@@ -57,7 +57,27 @@ class TaskListViewModel @Inject constructor(
 
     fun loadData(forceUpdate: Boolean) {
         viewModelScope.launch(dispatcher) {
-            TODO()
+            _uiState.emit(TaskListUIState.ShowLoader)
+            kotlin.runCatching {
+                getDateSortedTaskUseCase.invoke(forceUpdate)
+            }.map {
+                transformToUIList(it)
+            }.onSuccess {
+                if (it.isEmpty()) {
+                    _uiState.emit(TaskListUIState.ShowEmptyView)
+                } else {
+                    _uiState.emit(TaskListUIState.HideEmptyView)
+                }
+
+                updateJob?.cancel()
+                updateJob = launch {
+                    updateList(it)
+                }
+                _uiState.emit(TaskListUIState.HideLoader)
+            }.onFailure {
+                _uiState.emit(TaskListUIState.ShowMessage(R.string.message_error_loading_data))
+                _uiState.emit(TaskListUIState.HideLoader)
+            }
         }
     }
 
@@ -78,31 +98,76 @@ class TaskListViewModel @Inject constructor(
 
     fun createNewTask() {
         viewModelScope.launch(dispatcher) {
-//            TODO
+            _uiState.emit(TaskListUIState.ShowSaveTaskScreen(null))
         }
     }
 
     fun updateTask(taskId: String) {
         viewModelScope.launch(dispatcher) {
-            TODO()
+            _uiState.emit(TaskListUIState.ShowSaveTaskScreen(taskId))
         }
     }
 
     fun deleteTask(taskId: String) {
         viewModelScope.launch(dispatcher) {
-            TODO()
+            kotlin.runCatching {
+                _uiState.emit(TaskListUIState.ShowLoader)
+                deleteTaskUseCase.invoke(DeleteTaskUseCase.UseCaseParams(taskId))
+            }.onSuccess {
+                if (it.isSuccess) {
+                    _uiState.emit(TaskListUIState.HideLoader)
+                    _uiState.emit(TaskListUIState.ShowMessage(R.string.message_task_deleted))
+                    loadData(true)
+                } else {
+                    _uiState.emit(TaskListUIState.HideLoader)
+                    _uiState.emit(TaskListUIState.ShowMessage(R.string.message_error_deleting_task))
+                }
+            }.onFailure {
+                _uiState.emit(TaskListUIState.HideLoader)
+                _uiState.emit(TaskListUIState.ShowMessage(R.string.message_error_deleting_task))
+            }
         }
     }
 
     fun pinItem(taskId: String) {
         viewModelScope.launch(dispatcher) {
-            TODO()
+            kotlin.runCatching {
+                _uiState.emit(TaskListUIState.ShowLoader)
+                pinTaskUseCase.invoke(PinTaskUseCase.UseCaseParams(taskId))
+            }.onSuccess {
+                if (it.isSuccess) {
+                    _uiState.emit(TaskListUIState.HideLoader)
+                    _uiState.emit(TaskListUIState.ShowMessage(R.string.message_task_pinned))
+                    loadData(false)
+                } else {
+                    _uiState.emit(TaskListUIState.HideLoader)
+                    _uiState.emit(TaskListUIState.ShowMessage(R.string.message_error_pinning_task))
+                }
+            }.onFailure {
+                _uiState.emit(TaskListUIState.HideLoader)
+                _uiState.emit(TaskListUIState.ShowMessage(R.string.message_error_pinning_task))
+            }
         }
     }
 
     fun unPinItem(taskId: String) {
         viewModelScope.launch(dispatcher) {
-            TODO()
+            kotlin.runCatching {
+                _uiState.emit(TaskListUIState.ShowLoader)
+                unPinTaskUseCase.invoke(UnPinTaskUseCase.UseCaseParams(taskId))
+            }.onSuccess {
+                if (it.isSuccess) {
+                    _uiState.emit(TaskListUIState.HideLoader)
+                    _uiState.emit(TaskListUIState.ShowMessage(R.string.message_task_unpinned))
+                    loadData(false)
+                } else {
+                    _uiState.emit(TaskListUIState.HideLoader)
+                    _uiState.emit(TaskListUIState.ShowMessage(R.string.message_error_unpinning_task))
+                }
+            }.onFailure {
+                _uiState.emit(TaskListUIState.HideLoader)
+                _uiState.emit(TaskListUIState.ShowMessage(R.string.message_error_unpinning_task))
+            }
         }
     }
 }
