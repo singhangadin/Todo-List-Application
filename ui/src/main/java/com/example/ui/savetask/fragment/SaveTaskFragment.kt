@@ -78,4 +78,16 @@ class SaveTaskFragment: Fragment() {
             timeNow.get(Calendar.DAY_OF_MONTH)
         ).show()
     }
+
+    private fun showLoader() {
+        binding.progressLayout.visibility = View.VISIBLE
+    }
+
+    private fun hideLoader() {
+        binding.progressLayout.visibility = View.GONE
+    }
+
+    private fun showMessage(id: Int) {
+        Snackbar.make(binding.root, id, Snackbar.LENGTH_SHORT).show()
+    }
 }
