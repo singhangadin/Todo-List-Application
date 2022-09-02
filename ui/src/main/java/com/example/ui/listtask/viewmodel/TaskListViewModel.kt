@@ -84,7 +84,8 @@ class TaskListViewModel @Inject constructor(
 
     fun updateTask(taskId: String) {
         viewModelScope.launch(dispatcher) {
-//            TODO
+            // TODO: Uncomment this
+//            _uiState.emit(TaskListUIState.ShowSaveTaskScreen(taskId))
         }
     }
 
