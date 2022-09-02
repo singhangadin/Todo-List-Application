@@ -17,6 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -45,7 +46,13 @@ class SaveTaskFragment: Fragment() {
 
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect { uiState ->
+                viewModel.uiState
+                    .onSubscription {
+                        arguments?.let {
+                            viewModel.init(SaveTaskFragmentArgs.fromBundle(it).taskId)
+                        }
+                    }
+                    .collect { uiState ->
                     when (uiState) {
                         is SaveTaskUIState.HideLoader -> binding.progressLayout.visibility = View.GONE
                         is SaveTaskUIState.ShowLoader -> binding.progressLayout.visibility = View.VISIBLE
@@ -59,10 +66,6 @@ class SaveTaskFragment: Fragment() {
                     }
                 }
             }
-        }
-
-        arguments?.let {
-            viewModel.init(SaveTaskFragmentArgs.fromBundle(it).taskId)
         }
         setDisplayHomeAsUpEnabled(true)
     }
