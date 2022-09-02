@@ -98,7 +98,7 @@ class ApplicationModule {
     @Singleton
     @Provides
     @DefaultRepository
-    fun provideTaskRepository(@IODispatcher ioDispatcher: CoroutineDispatcher, @FileDataSource taskDataSource: TaskDataSource, logService: LogService): TaskRepositoryContract {
+    fun provideTaskRepository(@IODispatcher ioDispatcher: CoroutineDispatcher, @DBDataSource taskDataSource: TaskDataSource, logService: LogService): TaskRepositoryContract {
         return DefaultTaskRepository(
             taskDataSource,
             logService,
