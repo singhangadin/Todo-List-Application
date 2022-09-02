@@ -84,25 +84,43 @@ class TaskListViewModel @Inject constructor(
 
     fun updateTask(taskId: String) {
         viewModelScope.launch(dispatcher) {
-            TODO()
+//            TODO
         }
     }
 
     fun deleteTask(taskId: String) {
         viewModelScope.launch(dispatcher) {
-            TODO()
+//            TODO
         }
     }
 
     fun pinItem(taskId: String) {
+        // TODO: Uncomment these
         viewModelScope.launch(dispatcher) {
-            TODO()
+            viewModelScope.launch(dispatcher) {
+                kotlin.runCatching {
+//                    _uiState.emit(TaskListUIState.ShowLoader)
+                    pinTaskUseCase.invoke(PinTaskUseCase.UseCaseParams(taskId))
+                }.onSuccess {
+                    if (it.isSuccess) {
+//                        _uiState.emit(TaskListUIState.HideLoader)
+//                        _uiState.emit(TaskListUIState.ShowMessage(R.string.message_task_pinned))
+                        loadData(false)
+                    } else {
+//                        _uiState.emit(TaskListUIState.HideLoader)
+//                        _uiState.emit(TaskListUIState.ShowMessage(R.string.message_error_pinning_task))
+                    }
+                }.onFailure {
+//                    _uiState.emit(TaskListUIState.HideLoader)
+//                    _uiState.emit(TaskListUIState.ShowMessage(R.string.message_error_pinning_task))
+                }
+            }
         }
     }
 
     fun unPinItem(taskId: String) {
         viewModelScope.launch(dispatcher) {
-            TODO()
+//            TODO
         }
     }
 }

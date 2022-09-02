@@ -17,14 +17,15 @@ class DBTaskDataSource @Inject constructor(private val taskDao: TaskDao): TaskDa
     override suspend fun deleteTask(task: Task) = TODO()
 
     override suspend fun updateTask(task: Task): Task? {
-        TODO()
+        taskDao.updateTask(task.fromDomainTask())
+        return taskDao.getTaskWithId(task.taskId!!.toLong())?.toDomainTask()
     }
 
-    override suspend fun getTaskWithId(id: String): Task? = TODO()
+    override suspend fun getTaskWithId(id: String): Task? = taskDao.getTaskWithId(id.toLong())?.toDomainTask()
 
     override suspend fun removeTaskWithId(id: String) = TODO()
 
-    override suspend fun pinTask(id: String) = TODO()
+    override suspend fun pinTask(id: String) = taskDao.pinTask(id.toLong())
 
     override suspend fun unPinTask(id: String) = TODO()
 

@@ -26,7 +26,15 @@ class DefaultTaskRepository @Inject constructor(
     }
 
     override suspend fun getTaskById(taskId: String): Result<Task> = withContext(ioDispatcher) {
-        TODO()
+        return@withContext kotlin.runCatching {
+            val task = taskDataSource.getTaskWithId(taskId)
+            task ?: throw DataNotFoundException()
+        }.onSuccess {
+            Result.success(it)
+        }.onFailure {
+            logService.logException(this@DefaultTaskRepository.javaClass.name, it)
+            Result.failure<Throwable>(it)
+        }
     }
 
     override suspend fun createNewTask(task: Task): Result<Task?> = withContext(ioDispatcher) {
@@ -38,11 +46,35 @@ class DefaultTaskRepository @Inject constructor(
     }
 
     override suspend fun updateTask(taskId: String, task: Task): Result<Task?> = withContext(ioDispatcher) {
-        TODO()
+        return@withContext kotlin.runCatching {
+            val savedTask = taskDataSource.getTaskWithId(taskId)
+            if (savedTask != null) {
+                taskDataSource.updateTask(task)
+            } else {
+                throw DataNotFoundException()
+            }
+        }.onSuccess {
+            Result.success(it)
+        }.onFailure {
+            logService.logException(this@DefaultTaskRepository.javaClass.name, it)
+            Result.failure<Throwable>(it)
+        }
     }
 
     override suspend fun pinTask(taskId: String): Result<Unit> = withContext(ioDispatcher) {
-        TODO()
+        return@withContext kotlin.runCatching {
+            val savedTask = taskDataSource.getTaskWithId(taskId)
+            if (savedTask != null) {
+                taskDataSource.pinTask(taskId)
+            } else {
+                throw DataNotFoundException()
+            }
+        }.onSuccess {
+            Result.success(it)
+        }.onFailure {
+            logService.logException(this@DefaultTaskRepository.javaClass.name, it)
+            Result.failure<Throwable>(it)
+        }
     }
 
     override suspend fun unPinTask(taskId: String): Result<Unit> = withContext(ioDispatcher) {
