@@ -35,7 +35,4 @@ interface TaskDao {
 
     @Query("DELETE FROM task_table")
     suspend fun deleteAllTasks()
-
-    @Query("SELECT * FROM task_table")
-    fun getAllTasksFlow(): Flow<List<Task>>
 }
