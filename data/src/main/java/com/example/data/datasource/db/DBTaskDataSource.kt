@@ -29,7 +29,7 @@ class DBTaskDataSource @Inject constructor(private val taskDao: TaskDao): TaskDa
 
     override suspend fun unPinTask(id: String) = TODO()
 
-    override suspend fun getAllTasks(): List<Task> = TODO()
+    override suspend fun getAllTasks(): List<Task> = taskDao.getAllTasks().map { it.toDomainTask() }
 
     override suspend fun deleteAllTasks() = TODO()
 }

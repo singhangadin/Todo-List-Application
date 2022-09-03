@@ -51,7 +51,9 @@ class TaskListFragment : Fragment(), ListItemClickListener {
 
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect{
+                viewModel.uiState
+                    .onSubscription { viewModel.loadData(true) }
+                    .collect{
                     when(it) {
                         TaskListUIState.HideEmptyView -> hideEmptyView()
                         TaskListUIState.HideLoader -> hideLoader()
