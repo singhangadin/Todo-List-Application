@@ -22,7 +22,14 @@ class DefaultTaskRepository @Inject constructor(
 
 
     override suspend fun getTasks(forceUpdate: Boolean): Result<List<Task>> = withContext(ioDispatcher) {
-        TODO()
+        return@withContext kotlin.runCatching {
+            val tasks = taskDataSource.getAllTasks()
+            tasks
+        }.onSuccess {
+            Result.success(it)
+        }.onFailure {
+            Result.failure<Exception>(it)
+        }
     }
 
     override suspend fun getTaskById(taskId: String): Result<Task> = withContext(ioDispatcher) {

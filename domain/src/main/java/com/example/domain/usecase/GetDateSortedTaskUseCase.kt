@@ -9,6 +9,14 @@ import javax.inject.Inject
 
 class GetDateSortedTaskUseCase @Inject constructor(@DefaultRepository private val repository: TaskRepositoryContract) {
     suspend operator fun invoke(forceUpdate: Boolean = false): Map<Boolean, List<Task>> {
-        TODO()
+        val result = repository.getTasks(forceUpdate)
+        if (result.isSuccess) {
+            val data = result.getOrNull()
+            return data?.sortedWith(TaskDateComparator())
+                ?.groupBy { it.isPinned }
+                ?.toSortedMap(Collections.reverseOrder())?: mutableMapOf()
+        } else {
+            return emptyMap()
+        }
     }
 }
