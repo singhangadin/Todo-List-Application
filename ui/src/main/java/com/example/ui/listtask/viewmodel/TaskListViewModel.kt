@@ -57,7 +57,24 @@ class TaskListViewModel @Inject constructor(
 
     fun loadData(forceUpdate: Boolean) {
         viewModelScope.launch(dispatcher) {
-            TODO()
+            _uiState.emit(TaskListUIState.ShowLoader)
+            kotlin.runCatching {
+                getDateSortedTaskUseCase.invoke(forceUpdate)
+            }.map {
+                transformToUIList(it)
+            }
+            .onSuccess {
+                if (it.isEmpty()) {
+                    _uiState.emit(TaskListUIState.ShowEmptyView)
+                } else {
+                    _uiState.emit(TaskListUIState.HideEmptyView)
+                }
+                updateList(it)
+                _uiState.emit(TaskListUIState.HideLoader)
+            }.onFailure {
+                _uiState.emit(TaskListUIState.HideLoader)
+                _uiState.emit(TaskListUIState.ShowMessage(R.string.message_error_loading_data))
+            }
         }
     }
 

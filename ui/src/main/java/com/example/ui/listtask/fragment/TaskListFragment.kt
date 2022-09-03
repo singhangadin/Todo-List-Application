@@ -22,6 +22,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.launch
 
@@ -50,7 +51,15 @@ class TaskListFragment : Fragment(), ListItemClickListener {
 
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-//                TODO
+                viewModel.uiState.collect{
+                    when(it) {
+                        TaskListUIState.HideEmptyView -> hideEmptyView()
+                        TaskListUIState.HideLoader -> hideLoader()
+                        TaskListUIState.ShowEmptyView -> showEmptyView()
+                        TaskListUIState.ShowLoader -> showLoader()
+                        is TaskListUIState.ShowMessage -> showMessage(it.id)
+                    }
+                }
             }
         }
 
