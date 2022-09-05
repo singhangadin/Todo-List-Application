@@ -11,8 +11,8 @@ import javax.inject.Singleton
 @Singleton
 class DBTaskDataSource @Inject constructor(private val taskDao: TaskDao): TaskDataSource {
     override suspend fun insertTask(task: Task): Task? {
-        taskDao.insertTask(task.fromDomainTask())
-        return taskDao.getAllTasks().find { it.taskTitle == task.taskTitle }?.toDomainTask()
+        val id = taskDao.insertTask(task.fromDomainTask())
+        return taskDao.getTaskWithId(id)?.toDomainTask()
     }
 
     override suspend fun deleteTask(task: Task) = taskDao.deleteTask(task.fromDomainTask())

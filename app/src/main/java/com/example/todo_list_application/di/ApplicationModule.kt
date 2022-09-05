@@ -14,7 +14,9 @@ import com.example.data.datasource.file.FileTaskDataSource
 import com.example.data.datasource.inmemory.InMemoryTaskDataSource
 import com.example.data.datasource.remote.RemoteTaskDataSource
 import com.example.data.datasource.remote.service.TodoService
+import com.example.data.repository.WorkManagerSchedulerRepository
 import com.example.domain.contract.LogService
+import com.example.domain.contract.SchedulerRepositoryContract
 import com.example.domain.contract.TaskRepositoryContract
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -71,7 +73,7 @@ class ApplicationModule {
         return Room.databaseBuilder(
             context,
             TodoDatabase::class.java,
-            "todo_database"
+            Constants.DATABASE_NAME
         ).build()
     }
 
@@ -120,6 +122,13 @@ class ApplicationModule {
 
     @Singleton
     @Provides
+    @WorkManagerScheduler
+    fun provideSchedulerRepository(@ApplicationContext context: Context): SchedulerRepositoryContract {
+        return WorkManagerSchedulerRepository(context)
+    }
+
+    @Singleton
+    @Provides
     fun provideLogService(): LogService {
         return AndroidLogService()
     }
@@ -145,11 +154,12 @@ class ApplicationModule {
         return InMemoryTaskDataSource()
     }
 
-//    @Singleton
-//    @Provides
-//    fun provideRemoteDataSource(todoService: TodoService): TaskDataSource {
-//        return RemoteTaskDataSource(todoService)
-//    }
+    @Singleton
+    @Provides
+    @RemoteDataSource
+    fun provideRemoteDataSource(todoService: TodoService): TaskDataSource {
+        return RemoteTaskDataSource(todoService)
+    }
 
     @Singleton
     @Provides

@@ -16,6 +16,10 @@ annotation class FileDataSource
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
+annotation class RemoteDataSource
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
 annotation class DefaultRepository
 
 @Qualifier
@@ -29,3 +33,7 @@ annotation class IODispatcher
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class DefaultDispatcher
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class WorkManagerScheduler
