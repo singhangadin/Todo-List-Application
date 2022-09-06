@@ -26,10 +26,10 @@ android {
         }
     }
 
-    flavorDimensions "version"
+    flavorDimensions "ui_type"
     productFlavors {
         xmlUI {
-            dimension "version"
+            dimension "ui_type"
             applicationIdSuffix ".xml"
             versionNameSuffix "-xml"
 
@@ -39,7 +39,7 @@ android {
             }
         }
         composeUI {
-            dimension "version"
+            dimension "ui_type"
             applicationIdSuffix ".compose"
             versionNameSuffix "-compose"
         }
