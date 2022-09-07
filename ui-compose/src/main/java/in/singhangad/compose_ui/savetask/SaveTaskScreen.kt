@@ -3,6 +3,8 @@ package `in`.singhangad.compose_ui.savetask
 import `in`.singhangad.compose_ui.R
 import `in`.singhangad.compose_ui.utils.DatePickerDialogFactory
 import `in`.singhangad.compose_ui.values.TextTitleStyle
+import `in`.singhangad.ui_common.savetask.uistate.SaveTaskUIState
+import `in`.singhangad.ui_common.savetask.viewmodel.SaveTaskViewModel
 import android.app.Dialog
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
@@ -13,6 +15,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,11 +29,18 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.domain.usecase.UpsertTaskUseCase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import java.util.*
 
 @Composable
-fun SaveTaskScreen() {
+fun SaveTaskScreen(viewModel: SaveTaskViewModel?) {
     MaterialTheme {
+        val scaffoldState: ScaffoldState = rememberScaffoldState()
+        val coroutineScope: CoroutineScope = rememberCoroutineScope()
         Scaffold(
+            scaffoldState = scaffoldState,
             topBar = {
                 TopAppBar {
                     Text(
@@ -39,11 +49,21 @@ fun SaveTaskScreen() {
                 }
             }
         ) {
+            val uiState = viewModel!!.uiState.collectAsState(initial = SaveTaskUIState.HideLoader)
             Box(modifier = Modifier
                 .fillMaxHeight()
                 .fillMaxWidth()
             ) {
-                var loading by remember { mutableStateOf(false)}
+                val selectedDate = viewModel.endDate.observeAsState()
+                val mDatePickerDialog = DatePickerDialogFactory.create(LocalContext.current) { year, month, day ->
+                    val calendar = Calendar.getInstance()
+                    calendar.set(Calendar.YEAR, year)
+                    calendar.set(Calendar.MONTH,month)
+                    calendar.set(Calendar.DAY_OF_MONTH,day)
+
+                    viewModel.endDate.value = calendar.time
+                }
+
                 Column(
                     modifier = Modifier
                         .padding(
@@ -52,55 +72,60 @@ fun SaveTaskScreen() {
                         .fillMaxHeight()
                         .fillMaxWidth()
                 ) {
-                    var titleText = remember { mutableStateOf("") }
-                    TitleItem(titleText)
+                    val titleText = viewModel.taskTitle.observeAsState()
+                    TitleItem(viewModel, titleText)
                     Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.margin_small)))
 
                     DescriptionItem()
                     Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.margin_small)))
 
-                    val hintText = stringResource(id = R.string.label_hint_date)
-                    val selectedDate = remember {
-                        mutableStateOf(
-                            hintText
-                        )
-                    }
-                    val mDatePickerDialog = DatePickerDialogFactory.create(LocalContext.current) { year, month, day ->
-                        selectedDate.value = "$year/$month/$day"
-                    }
-
-                    DateOfCompletionItem(mDatePickerDialog, selectedDate)
+                    DateOfCompletionItem(viewModel, selectedDate)
 
                     Spacer(modifier = Modifier.weight(1f))
 
-                    Button(modifier = Modifier.fillMaxWidth(), onClick = { loading = !loading }) {
+                    Button(modifier = Modifier.fillMaxWidth(), onClick = { viewModel.saveTask() }) {
                         Text(text = stringResource(id = R.string.label_task_save))
                     }
                 }
 
-                if (loading) {
-                    CircularProgressIndicator(
-                        Modifier.align(Alignment.Center)
-                    )
+                when(uiState.value) {
+                    SaveTaskUIState.HideLoader -> { }
+                    SaveTaskUIState.ShowDatePicker -> { mDatePickerDialog.show() }
+                    SaveTaskUIState.ShowLoader -> {
+                        CircularProgressIndicator(
+                            Modifier.align(Alignment.Center)
+                        )
+                    }
+                    is SaveTaskUIState.ShowMessage -> {
+                        val message = stringResource(id = (uiState.value as SaveTaskUIState.ShowMessage).message)
+                        coroutineScope.launch {
+                            scaffoldState.snackbarHostState.showSnackbar(
+                                message = message
+                            )
+                        }
+                    }
+                    SaveTaskUIState.Success -> {  }
                 }
+
             }
         }
     }
 }
 
 @Composable
-fun TitleItem(titleText: MutableState<String>) {
+fun TitleItem(viewModel: SaveTaskViewModel?, titleText: State<String?>) {
     Text(
         text = stringResource(R.string.label_task_title),
-        style = TextTitleStyle
+        style = TextTitleStyle,
+        modifier = Modifier.fillMaxWidth()
     )
 
     val horizontalScrollState = rememberScrollState(0)
     BasicTextField(
-        value = titleText.value,
+        value = titleText.value?:"",
         singleLine = true,
         maxLines = 1,
-        onValueChange = { titleText.value = it },
+        onValueChange = { viewModel?.taskTitle?.value = it },
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 8.dp)
@@ -118,7 +143,8 @@ fun DescriptionItem() {
     var descriptionText by remember { mutableStateOf("") }
     Text(
         text = stringResource(R.string.label_task_description),
-        style = TextTitleStyle
+        style = TextTitleStyle,
+        modifier = Modifier.fillMaxWidth()
     )
     val verticalScrollState = rememberScrollState(0)
     BasicTextField(
@@ -136,20 +162,31 @@ fun DescriptionItem() {
 }
 
 @Composable
-fun DateOfCompletionItem(mDatePickerDialog: Dialog, date: MutableState<String>) {
+fun DateOfCompletionItem(viewModel: SaveTaskViewModel?, date: State<Date?>) {
     Text(
         text = stringResource(R.string.label_task_doc),
-        style = TextTitleStyle
+        style = TextTitleStyle,
+        modifier = Modifier.fillMaxWidth()
     )
+    val label = if (date.value == null) {
+        stringResource(id = R.string.label_hint_date)
+    } else {
+        val calendar = Calendar.getInstance()
+        calendar.time = date.value!!
+        "${calendar.get(Calendar.YEAR)}/" +
+        "${calendar.get(Calendar.MONTH)}/" +
+        "${calendar.get(Calendar.DAY_OF_MONTH)}"
+    }
     ClickableText(
-        text = AnnotatedString(date.value),
-        onClick = { mDatePickerDialog.show() },
-        style = TextStyle.Default.copy(color = Color.Gray)
+        text = AnnotatedString(label),
+        onClick = { viewModel?.showDatePicker() },
+        style = TextStyle.Default.copy(color = Color.Gray),
+        modifier = Modifier.fillMaxWidth()
     )
 }
 
 @Preview
 @Composable
 fun showPreview(){
-    SaveTaskScreen()
+    SaveTaskScreen(null)
 }

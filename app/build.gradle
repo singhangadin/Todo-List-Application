@@ -72,6 +72,7 @@ dependencies {
     implementation project(path: ':domain')
     implementation project(path: ':common')
 
+    implementation project(path: ':ui-common')
     xmlUIImplementation project(path: ':ui-xml')
     composeUIImplementation project(path: ':ui-compose')
     implementation 'androidx.activity:activity-compose:1.5.1'
