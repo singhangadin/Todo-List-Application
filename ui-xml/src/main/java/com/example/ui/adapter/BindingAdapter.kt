@@ -1,7 +1,7 @@
 package com.example.ui.adapter
 
-import com.example.ui.listtask.adapter.TaskListAdapter
-import com.example.ui.listtask.entity.TaskListItem
+import `in`.singhangad.ui_common.listtask.adapter.TaskListAdapter
+import `in`.singhangad.ui_common.listtask.entity.TaskListItem
 import android.graphics.Paint
 import android.widget.TextView
 import androidx.databinding.BindingAdapter

@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.ui.savetask.viewmodel.SaveTaskViewModel" />
+            type="in.singhangad.ui_common.savetask.viewmodel.SaveTaskViewModel" />
     </data>
 
     <FrameLayout

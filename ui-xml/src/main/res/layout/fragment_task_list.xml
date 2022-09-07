@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.ui.listtask.viewmodel.TaskListViewModel" />
+            type="in.singhangad.ui_common.listtask.viewmodel.TaskListViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

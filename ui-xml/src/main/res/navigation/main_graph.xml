@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/taskListFragment"
-        android:name="com.example.ui.listtask.fragment.TaskListFragment"
+        android:name="in.singhangad.ui_common.listtask.fragment.TaskListFragment"
         android:label="TaskListFragment" >
         <action
             android:id="@+id/action_taskListFragment_to_saveTaskFragment"

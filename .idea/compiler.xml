@@ -4,6 +4,7 @@
     <bytecodeTargetLevel target="1.7">
       <module name="Todo-List-Application.app" target="11" />
       <module name="Todo-List-Application.data" target="11" />
+      <module name="Todo-List-Application.ui-common" target="11" />
       <module name="Todo-List-Application.ui-compose" target="11" />
       <module name="Todo-List-Application.ui-xml" target="11" />
     </bytecodeTargetLevel>

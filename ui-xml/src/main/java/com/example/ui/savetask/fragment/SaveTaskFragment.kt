@@ -1,8 +1,8 @@
 package com.example.ui.savetask.fragment
 
 import com.example.ui.databinding.FragmentSaveTaskBinding
-import com.example.ui.savetask.uistate.SaveTaskUIState
-import com.example.ui.savetask.viewmodel.SaveTaskViewModel
+import `in`.singhangad.ui_common.savetask.uistate.SaveTaskUIState
+import `in`.singhangad.ui_common.savetask.viewmodel.SaveTaskViewModel
 import com.example.ui.setDisplayHomeAsUpEnabled
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener

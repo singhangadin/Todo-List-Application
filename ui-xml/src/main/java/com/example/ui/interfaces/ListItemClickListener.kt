@@ -1,7 +1,7 @@
 package com.example.ui.interfaces
 
 import android.view.View
-import com.example.ui.listtask.entity.TaskListItem
+import `in`.singhangad.ui_common.listtask.entity.TaskListItem
 
 interface ListItemClickListener {
     fun onItemClicked(task: TaskListItem)

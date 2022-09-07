@@ -7,7 +7,7 @@
     <data>
         <variable
             name="task"
-            type="com.example.ui.listtask.entity.TaskListItem" />
+            type="in.singhangad.ui_common.listtask.entity.TaskListItem" />
     </data>
 
     <FrameLayout
