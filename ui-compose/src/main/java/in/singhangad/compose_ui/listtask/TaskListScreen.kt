@@ -31,14 +31,16 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.launch
 
 @Composable
 fun TaskListScreen(viewModel: TaskListViewModel, navigateSave: (String?) -> Unit) {
     val scaffoldState: ScaffoldState = rememberScaffoldState()
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
-    val uiState = viewModel.uiState.collectAsState(initial = TaskListUIState.HideLoader)
-    var isRefreshing by remember { mutableStateOf(false) }
+    val uiState = viewModel.uiState.onSubscription {
+        viewModel.loadData(true)
+    }.collectAsState(initial = TaskListUIState.HideLoader)
 
     MaterialTheme {
         Scaffold(
@@ -63,9 +65,8 @@ fun TaskListScreen(viewModel: TaskListViewModel, navigateSave: (String?) -> Unit
                 contentAlignment = Alignment.Center
             ) {
                 val data = viewModel.taskList.observeAsState()
-                if (data.value.isNullOrEmpty()) {
-                    EmptyView()
-                } else {
+
+                if (!data.value.isNullOrEmpty()) {
                     TaskList(data = data.value ?: mutableListOf()) { taskId ->
                         viewModel.updateTask(taskId)
                     }
@@ -73,7 +74,7 @@ fun TaskListScreen(viewModel: TaskListViewModel, navigateSave: (String?) -> Unit
 
                 when(uiState.value) {
                     TaskListUIState.HideEmptyView -> { }
-                    TaskListUIState.HideLoader -> { isRefreshing = false }
+                    TaskListUIState.HideLoader -> {  }
                     TaskListUIState.ShowEmptyView -> EmptyView()
                     TaskListUIState.ShowLoader ->
                         CircularProgressIndicator(Modifier.align(Alignment.Center))
@@ -93,8 +94,6 @@ fun TaskListScreen(viewModel: TaskListViewModel, navigateSave: (String?) -> Unit
             }
         }
     }
-
-    viewModel.loadData(true)
 }
 
 @Composable

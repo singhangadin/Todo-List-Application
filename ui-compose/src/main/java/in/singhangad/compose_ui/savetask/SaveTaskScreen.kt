@@ -31,11 +31,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.launch
 import java.util.*
 
 @Composable
-fun SaveTaskScreen(viewModel: SaveTaskViewModel, onBackPress: () -> Unit) {
+fun SaveTaskScreen(viewModel: SaveTaskViewModel, taskId: String?, onBackPress: () -> Unit) {
     val mDatePickerDialog = DatePickerDialogFactory.create(LocalContext.current) { year, month, day ->
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.YEAR, year)
@@ -48,7 +49,9 @@ fun SaveTaskScreen(viewModel: SaveTaskViewModel, onBackPress: () -> Unit) {
     MaterialTheme {
         val scaffoldState: ScaffoldState = rememberScaffoldState()
         val coroutineScope: CoroutineScope = rememberCoroutineScope()
-        val uiState = viewModel.uiState.collectAsState(initial = SaveTaskUIState.HideLoader)
+        val uiState = viewModel.uiState.onSubscription {
+            viewModel.init(taskId)
+        }.collectAsState(initial = SaveTaskUIState.HideLoader)
 
         Scaffold(
             scaffoldState = scaffoldState

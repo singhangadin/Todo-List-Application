@@ -24,7 +24,10 @@ class SaveTaskFragment: Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                SaveTaskScreen(viewModel = viewModel) {
+                val taskId = arguments?.run {
+                    SaveTaskFragmentArgs.fromBundle(this).taskId
+                }
+                SaveTaskScreen(viewModel = viewModel, taskId) {
                     activity?.onBackPressed()
                 }
             }
