@@ -6,7 +6,9 @@ import `in`.singhangad.compose_ui.values.TextTitleStyle
 import `in`.singhangad.ui_common.R as CR
 import `in`.singhangad.ui_common.listtask.entity.ItemType
 import `in`.singhangad.ui_common.listtask.entity.TaskListItem
+import `in`.singhangad.ui_common.listtask.uistate.TaskListUIState
 import `in`.singhangad.ui_common.listtask.viewmodel.TaskListViewModel
+import `in`.singhangad.ui_common.savetask.uistate.SaveTaskUIState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -16,7 +18,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,14 +30,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun TaskListScreen(viewModel: TaskListViewModel, navigateSave: (String?) -> Unit) {
+    val scaffoldState: ScaffoldState = rememberScaffoldState()
+    val coroutineScope: CoroutineScope = rememberCoroutineScope()
+    val uiState = viewModel.uiState.collectAsState(initial = TaskListUIState.HideLoader)
+    var isRefreshing by remember { mutableStateOf(false) }
+
     MaterialTheme {
         Scaffold(
+            scaffoldState = scaffoldState,
             floatingActionButton = {
                 FloatingActionButton(
-                    onClick = { navigateSave.invoke(null) }) {
+                    onClick = { viewModel.createNewTask() }) {
                     Icon(Icons.Filled.Add,"")
                 }
             },
@@ -46,23 +56,45 @@ fun TaskListScreen(viewModel: TaskListViewModel, navigateSave: (String?) -> Unit
         ) {
             Box(
                 modifier =
-                    Modifier
-                        .padding(it)
-                        .fillMaxWidth()
-                        .fillMaxHeight(),
+                Modifier
+                    .padding(it)
+                    .fillMaxWidth()
+                    .fillMaxHeight(),
                 contentAlignment = Alignment.Center
             ) {
                 val data = viewModel.taskList.observeAsState()
                 if (data.value.isNullOrEmpty()) {
                     EmptyView()
                 } else {
-                    TaskList(data = data.value?: mutableListOf())
+                    TaskList(data = data.value ?: mutableListOf()) { taskId ->
+                        viewModel.updateTask(taskId)
+                    }
                 }
 
-                viewModel.loadData(true)
+                when(uiState.value) {
+                    TaskListUIState.HideEmptyView -> { }
+                    TaskListUIState.HideLoader -> { isRefreshing = false }
+                    TaskListUIState.ShowEmptyView -> EmptyView()
+                    TaskListUIState.ShowLoader ->
+                        CircularProgressIndicator(Modifier.align(Alignment.Center))
+
+                    is TaskListUIState.ShowMessage -> {
+                        val message = stringResource(id = (uiState.value as SaveTaskUIState.ShowMessage).message)
+                        coroutineScope.launch {
+                            scaffoldState.snackbarHostState.showSnackbar(
+                                message = message
+                            )
+                        }
+                    }
+                    is TaskListUIState.ShowSaveTaskScreen -> {
+                        navigateSave.invoke((uiState.value as TaskListUIState.ShowSaveTaskScreen).taskId)
+                    }
+                }
             }
         }
     }
+
+    viewModel.loadData(true)
 }
 
 @Composable
@@ -100,7 +132,7 @@ fun EmptyView() {
 }
 
 @Composable
-fun TaskList(data: List<TaskListItem>) {
+fun TaskList(data: List<TaskListItem>, onItemClick: (String) -> Unit) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         modifier =
@@ -111,25 +143,30 @@ fun TaskList(data: List<TaskListItem>) {
         items(
             items = data,
             span = { item ->
-            when (item.itemType) {
-                ItemType.HEADER -> GridItemSpan(2)
-                ItemType.TASK_ITEM -> GridItemSpan(1)
-            }
-        }, key = { task -> task.itemId }) { item ->
+                when (item.itemType) {
+                    ItemType.HEADER -> GridItemSpan(2)
+                    ItemType.TASK_ITEM -> GridItemSpan(1)
+                }
+            }, key = { task -> task.itemId }) { item ->
             when (item.itemType) {
                 ItemType.HEADER -> TaskHeaderItem(item)
-                ItemType.TASK_ITEM -> TaskItem(item)
+                ItemType.TASK_ITEM -> TaskItem(item) {
+                    onItemClick(it)
+                }
             }
         }
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun TaskItem(taskListItem: TaskListItem) {
+fun TaskItem(taskListItem: TaskListItem, onClick: (String) -> Unit) {
     Card(elevation = 3.dp,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(dimensionResource(id = CR.dimen.margin_small))) {
+            .padding(dimensionResource(id = CR.dimen.margin_small)),
+        onClick = { onClick(taskListItem.itemId) }
+    ) {
         ConstraintLayout(
             modifier = Modifier.padding(
                 dimensionResource(id = CR.dimen.margin_regular)
@@ -204,7 +241,7 @@ fun TaskListItemPreview() {
         "Title",
         "Description",
         false
-    ))
+    ), { })
 }
 
 @Preview
