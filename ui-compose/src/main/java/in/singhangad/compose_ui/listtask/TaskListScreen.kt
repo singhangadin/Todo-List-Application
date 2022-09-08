@@ -1,6 +1,8 @@
 package `in`.singhangad.compose_ui.listtask
 
 import `in`.singhangad.compose_ui.R
+import `in`.singhangad.compose_ui.values.TextSubTitleStyle
+import `in`.singhangad.compose_ui.values.TextTitleStyle
 import `in`.singhangad.ui_common.R as CR
 import `in`.singhangad.ui_common.listtask.entity.ItemType
 import `in`.singhangad.ui_common.listtask.entity.TaskListItem
@@ -22,6 +24,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -50,12 +53,14 @@ fun TaskList(data: List<TaskListItem>) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2)
     ) {
-        items(items = data, span = { item ->
+        items(
+            items = data,
+            span = { item ->
             when (item.itemType) {
                 ItemType.HEADER -> GridItemSpan(2)
                 ItemType.TASK_ITEM -> GridItemSpan(1)
             }
-        }) { item ->
+        }, key = { task -> task.itemId }) { item ->
             when (item.itemType) {
                 ItemType.HEADER -> TaskHeaderItem(item)
                 ItemType.TASK_ITEM -> TaskItem(item)
@@ -82,7 +87,10 @@ fun TaskItem(taskListItem: TaskListItem) {
                     start.linkTo(parent.start)
                     end.linkTo(moreOptions.start)
                     width = Dimension.fillToConstraints
-                }
+                },
+                style = TextTitleStyle,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
 
             Image(
@@ -106,7 +114,8 @@ fun TaskItem(taskListItem: TaskListItem) {
                         width = Dimension.fillToConstraints
                     }
                     .padding(top = dimensionResource(id = CR.dimen.margin_regular)),
-                maxLines = 4
+                maxLines = 4,
+                overflow = TextOverflow.Ellipsis
             )
         }
     }
@@ -118,7 +127,9 @@ fun TaskHeaderItem(taskListItem: TaskListItem) {
         text = taskListItem.itemTitle,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(dimensionResource(id = CR.dimen.margin_small))
+            .padding(dimensionResource(id = CR.dimen.margin_small)),
+        style = TextSubTitleStyle,
+        maxLines = 1
     )
 }
 

@@ -75,11 +75,11 @@ fun SaveTaskScreen(viewModel: SaveTaskViewModel?) {
                     TitleItem(viewModel, titleText)
                     Spacer(modifier = Modifier.height(dimensionResource(id = CR.dimen.margin_small)))
 
-                    DescriptionItem()
+                    val descriptionText = viewModel.taskDescription.observeAsState()
+                    DescriptionItem(viewModel, descriptionText)
                     Spacer(modifier = Modifier.height(dimensionResource(id = CR.dimen.margin_small)))
 
                     DateOfCompletionItem(viewModel, selectedDate)
-
                     Spacer(modifier = Modifier.weight(1f))
 
                     Button(modifier = Modifier.fillMaxWidth(), onClick = { viewModel.saveTask() }) {
@@ -138,8 +138,7 @@ fun TitleItem(viewModel: SaveTaskViewModel?, titleText: State<String?>) {
 }
 
 @Composable
-fun DescriptionItem() {
-    var descriptionText by remember { mutableStateOf("") }
+fun DescriptionItem(viewModel: SaveTaskViewModel?, descriptionText: State<String?>) {
     Text(
         text = stringResource(CR.string.label_task_description),
         style = TextTitleStyle,
@@ -147,9 +146,9 @@ fun DescriptionItem() {
     )
     val verticalScrollState = rememberScrollState(0)
     BasicTextField(
-        value = descriptionText,
+        value = descriptionText.value?:"",
         onValueChange = {
-            descriptionText = it
+            viewModel?.taskDescription?.value = it
         },
         maxLines = 4,
         modifier = Modifier

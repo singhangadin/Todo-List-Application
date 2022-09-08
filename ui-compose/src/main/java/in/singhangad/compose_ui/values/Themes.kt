@@ -7,3 +7,8 @@ val TextTitleStyle = TextStyle(
     fontSize = TitleTextSize,
     fontWeight = FontWeight.Bold
 )
+
+val TextSubTitleStyle = TextStyle(
+    fontSize = TitleTextSize,
+    fontWeight = FontWeight.Normal
+)
