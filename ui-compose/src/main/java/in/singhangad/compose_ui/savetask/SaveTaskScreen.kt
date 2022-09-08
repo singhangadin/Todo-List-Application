@@ -13,6 +13,8 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -25,7 +27,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.CoroutineScope
@@ -33,68 +35,40 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 @Composable
-fun SaveTaskScreen(viewModel: SaveTaskViewModel?) {
+fun SaveTaskScreen(viewModel: SaveTaskViewModel, onBackPress: () -> Unit) {
+    val mDatePickerDialog = DatePickerDialogFactory.create(LocalContext.current) { year, month, day ->
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.YEAR, year)
+        calendar.set(Calendar.MONTH,month)
+        calendar.set(Calendar.DAY_OF_MONTH,day)
+
+        viewModel.endDate.value = calendar.time
+    }
+
     MaterialTheme {
         val scaffoldState: ScaffoldState = rememberScaffoldState()
         val coroutineScope: CoroutineScope = rememberCoroutineScope()
+
         Scaffold(
-            scaffoldState = scaffoldState,
-            topBar = {
-                TopAppBar {
-                    Text(
-                        text = stringResource(id = CR.string.label_task_doc)
-                    )
-                }
-            }
+            scaffoldState = scaffoldState
         ) {
-            val uiState = viewModel!!.uiState.collectAsState(initial = SaveTaskUIState.HideLoader)
+            val uiState = viewModel.uiState.collectAsState(initial = SaveTaskUIState.HideLoader)
             Box(modifier = Modifier
                 .fillMaxHeight()
                 .fillMaxWidth()
                 .padding(it)
             ) {
-                val selectedDate = viewModel.endDate.observeAsState()
-                val mDatePickerDialog = DatePickerDialogFactory.create(LocalContext.current) { year, month, day ->
-                    val calendar = Calendar.getInstance()
-                    calendar.set(Calendar.YEAR, year)
-                    calendar.set(Calendar.MONTH,month)
-                    calendar.set(Calendar.DAY_OF_MONTH,day)
-
-                    viewModel.endDate.value = calendar.time
-                }
-
-                Column(
-                    modifier = Modifier
-                        .padding(
-                            dimensionResource(id = CR.dimen.margin_regular)
-                        )
-                        .fillMaxHeight()
-                        .fillMaxWidth()
-                ) {
-                    val titleText = viewModel.taskTitle.observeAsState()
-                    TitleItem(viewModel, titleText)
-                    Spacer(modifier = Modifier.height(dimensionResource(id = CR.dimen.margin_small)))
-
-                    val descriptionText = viewModel.taskDescription.observeAsState()
-                    DescriptionItem(viewModel, descriptionText)
-                    Spacer(modifier = Modifier.height(dimensionResource(id = CR.dimen.margin_small)))
-
-                    DateOfCompletionItem(viewModel, selectedDate)
-                    Spacer(modifier = Modifier.weight(1f))
-
-                    Button(modifier = Modifier.fillMaxWidth(), onClick = { viewModel.saveTask() }) {
-                        Text(text = stringResource(id = CR.string.label_task_save))
-                    }
-                }
+                TaskForm(viewModel = viewModel)
 
                 when(uiState.value) {
                     SaveTaskUIState.HideLoader -> { }
-                    SaveTaskUIState.ShowDatePicker -> { mDatePickerDialog.show() }
-                    SaveTaskUIState.ShowLoader -> {
-                        CircularProgressIndicator(
-                            Modifier.align(Alignment.Center)
-                        )
-                    }
+
+                    SaveTaskUIState.ShowDatePicker ->
+                        mDatePickerDialog.show()
+
+                    SaveTaskUIState.ShowLoader ->
+                        CircularProgressIndicator(Modifier.align(Alignment.Center))
+
                     is SaveTaskUIState.ShowMessage -> {
                         val message = stringResource(id = (uiState.value as SaveTaskUIState.ShowMessage).message)
                         coroutineScope.launch {
@@ -103,10 +77,38 @@ fun SaveTaskScreen(viewModel: SaveTaskViewModel?) {
                             )
                         }
                     }
-                    SaveTaskUIState.Success -> {  }
+                    SaveTaskUIState.Success -> { onBackPress() }
                 }
-
             }
+        }
+    }
+}
+
+@Composable
+fun TaskForm(viewModel: SaveTaskViewModel) {
+    val selectedDate = viewModel.endDate.observeAsState()
+
+    Column(
+        modifier = Modifier
+            .padding(
+                dimensionResource(id = CR.dimen.margin_regular)
+            )
+            .fillMaxHeight()
+            .fillMaxWidth()
+    ) {
+        val titleText = viewModel.taskTitle.observeAsState()
+        TitleItem(viewModel, titleText)
+        Spacer(modifier = Modifier.height(dimensionResource(id = CR.dimen.margin_small)))
+
+        val descriptionText = viewModel.taskDescription.observeAsState()
+        DescriptionItem(viewModel, descriptionText)
+        Spacer(modifier = Modifier.height(dimensionResource(id = CR.dimen.margin_small)))
+
+        DateOfCompletionItem(viewModel, selectedDate)
+        Spacer(modifier = Modifier.weight(1f))
+
+        Button(modifier = Modifier.fillMaxWidth(), onClick = { viewModel.saveTask() }) {
+            Text(text = stringResource(id = CR.string.label_task_save))
         }
     }
 }
@@ -181,10 +183,4 @@ fun DateOfCompletionItem(viewModel: SaveTaskViewModel?, date: State<Date?>) {
         style = TextStyle.Default.copy(color = Color.Gray),
         modifier = Modifier.fillMaxWidth()
     )
-}
-
-@Preview
-@Composable
-fun showPreview(){
-    SaveTaskScreen(null)
 }

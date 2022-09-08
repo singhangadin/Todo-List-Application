@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.example.ui.setDisplayHomeAsUpEnabled
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,8 +24,16 @@ class SaveTaskFragment: Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                SaveTaskScreen(viewModel = viewModel)
+                SaveTaskScreen(viewModel = viewModel) {
+                    activity?.onBackPressed()
+                }
             }
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setDisplayHomeAsUpEnabled(true)
     }
 }

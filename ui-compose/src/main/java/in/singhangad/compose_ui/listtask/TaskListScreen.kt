@@ -1,6 +1,5 @@
 package `in`.singhangad.compose_ui.listtask
 
-import `in`.singhangad.compose_ui.R
 import `in`.singhangad.compose_ui.values.TextSubTitleStyle
 import `in`.singhangad.compose_ui.values.TextTitleStyle
 import `in`.singhangad.ui_common.R as CR
@@ -15,10 +14,9 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material.Card
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
@@ -30,21 +28,25 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 
 @Composable
-fun TaskListScreen(viewModel: TaskListViewModel?, navigateSave: (String?) -> Unit) {
-    Scaffold(
-        floatingActionButton = {
-            FloatingActionButton(onClick = { navigateSave.invoke(null) }) {
-
+fun TaskListScreen(viewModel: TaskListViewModel, navigateSave: (String?) -> Unit) {
+    MaterialTheme {
+        Scaffold(
+            floatingActionButton = {
+                FloatingActionButton(
+                    onClick = { navigateSave.invoke(null) }) {
+                    Icon(Icons.Filled.Add,"")
+                }
+            }
+        ) {
+            Box(
+                modifier = Modifier.padding(it)
+            ) {
+                val data = viewModel.taskList.observeAsState()
+                TaskList(data = data.value?: mutableListOf()).also {
+                    viewModel.loadData(false)
+                }
             }
         }
-    ) { Box(
-        modifier = Modifier.padding(it)
-    ) {
-        viewModel?.loadData(false)
-        val data = viewModel?.taskList?.observeAsState()
-        TaskList(data = data?.value?: mutableListOf())
-    }
-
     }
 }
 
@@ -156,11 +158,3 @@ fun TaskHeaderItemPreview() {
         false
     ))
 }
-
-//@Preview(name = "Main Screen")
-//@Composable
-//fun showPreview(){
-//    TaskListScreen(null) { taskId ->
-//
-//    }
-//}
