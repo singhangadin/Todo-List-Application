@@ -1,8 +1,8 @@
-package `in`.singhangad.ui_common.listtask.fragment
+package com.example.ui.listtask.fragment
 
 import com.example.ui.databinding.FragmentTaskListBinding
 import com.example.ui.interfaces.ListItemClickListener
-import `in`.singhangad.ui_common.listtask.adapter.TaskListAdapter
+import com.example.ui.listtask.adapter.TaskListAdapter
 import `in`.singhangad.ui_common.listtask.entity.TaskListItem
 import `in`.singhangad.ui_common.listtask.uistate.TaskListUIState
 import `in`.singhangad.ui_common.listtask.viewmodel.TaskListViewModel

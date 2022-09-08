@@ -5,6 +5,7 @@ import `in`.singhangad.compose_ui.utils.DatePickerDialogFactory
 import `in`.singhangad.compose_ui.values.TextTitleStyle
 import `in`.singhangad.ui_common.savetask.uistate.SaveTaskUIState
 import `in`.singhangad.ui_common.savetask.viewmodel.SaveTaskViewModel
+import android.annotation.SuppressLint
 import android.app.Dialog
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
@@ -53,6 +54,7 @@ fun SaveTaskScreen(viewModel: SaveTaskViewModel?) {
             Box(modifier = Modifier
                 .fillMaxHeight()
                 .fillMaxWidth()
+                .padding(it)
             ) {
                 val selectedDate = viewModel.endDate.observeAsState()
                 val mDatePickerDialog = DatePickerDialogFactory.create(LocalContext.current) { year, month, day ->

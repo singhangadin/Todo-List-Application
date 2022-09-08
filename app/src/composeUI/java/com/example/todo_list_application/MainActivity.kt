@@ -1,22 +1,29 @@
 package com.example.todo_list_application
 
-import `in`.singhangad.compose_ui.savetask.SaveTaskScreen
-import `in`.singhangad.ui_common.savetask.viewmodel.SaveTaskViewModel
 import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.viewModels
+import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
+import com.example.todo_list_application.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity: ComponentActivity() {
-
-    val viewModel by viewModels<SaveTaskViewModel>()
+class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            SaveTaskScreen(viewModel)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                binding.frameContainer.findNavController().popBackStack()
+                return true
+            }
         }
+        return super.onOptionsItemSelected(item)
     }
 }

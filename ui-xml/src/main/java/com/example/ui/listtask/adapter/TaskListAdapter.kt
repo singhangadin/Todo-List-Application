@@ -1,4 +1,4 @@
-package `in`.singhangad.ui_common.listtask.adapter
+package com.example.ui.listtask.adapter
 
 import com.example.ui.databinding.ListItemHeadingBinding
 import com.example.ui.databinding.ListItemTaskBinding
