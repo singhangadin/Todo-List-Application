@@ -4,8 +4,15 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/compose-model-1662652597345.xml" value="0.14358108108108109" />
+        <entry key="../../../../layout/compose-model-1662656045729.xml" value="0.1283594063377457" />
+        <entry key="../../../../layout/compose-model-1662656879217.xml" value="1.0" />
+        <entry key="../../../../layout/compose-model-1662657269494.xml" value="0.5" />
+        <entry key="../../../../layout/compose-model-1662658460156.xml" value="0.165" />
+        <entry key="../../../../layout/compose-model-1662658998418.xml" value="0.5" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.15625" />
         <entry key="app/src/xmlUI/res/layout/activity_main.xml" value="0.1" />
+        <entry key="ui-xml/src/main/res/layout/list_item_heading.xml" value="0.1" />
+        <entry key="ui-xml/src/main/res/layout/list_item_task.xml" value="0.18723404255319148" />
         <entry key="ui/src/main/res/layout/fragment_save_task.xml" value="0.15625" />
         <entry key="ui/src/main/res/layout/fragment_task_list.xml" value="0.15625" />
         <entry key="ui/src/main/res/layout/list_item_heading.xml" value="0.15625" />

@@ -1,12 +1,10 @@
 package `in`.singhangad.compose_ui.savetask
 
-import `in`.singhangad.compose_ui.R
+import `in`.singhangad.ui_common.R as CR
 import `in`.singhangad.compose_ui.utils.DatePickerDialogFactory
 import `in`.singhangad.compose_ui.values.TextTitleStyle
 import `in`.singhangad.ui_common.savetask.uistate.SaveTaskUIState
 import `in`.singhangad.ui_common.savetask.viewmodel.SaveTaskViewModel
-import android.annotation.SuppressLint
-import android.app.Dialog
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -30,7 +28,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.domain.usecase.UpsertTaskUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.util.*
@@ -45,7 +42,7 @@ fun SaveTaskScreen(viewModel: SaveTaskViewModel?) {
             topBar = {
                 TopAppBar {
                     Text(
-                        text = stringResource(id = R.string.label_task_doc)
+                        text = stringResource(id = CR.string.label_task_doc)
                     )
                 }
             }
@@ -69,24 +66,24 @@ fun SaveTaskScreen(viewModel: SaveTaskViewModel?) {
                 Column(
                     modifier = Modifier
                         .padding(
-                            dimensionResource(id = R.dimen.margin_regular)
+                            dimensionResource(id = CR.dimen.margin_regular)
                         )
                         .fillMaxHeight()
                         .fillMaxWidth()
                 ) {
                     val titleText = viewModel.taskTitle.observeAsState()
                     TitleItem(viewModel, titleText)
-                    Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.margin_small)))
+                    Spacer(modifier = Modifier.height(dimensionResource(id = CR.dimen.margin_small)))
 
                     DescriptionItem()
-                    Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.margin_small)))
+                    Spacer(modifier = Modifier.height(dimensionResource(id = CR.dimen.margin_small)))
 
                     DateOfCompletionItem(viewModel, selectedDate)
 
                     Spacer(modifier = Modifier.weight(1f))
 
                     Button(modifier = Modifier.fillMaxWidth(), onClick = { viewModel.saveTask() }) {
-                        Text(text = stringResource(id = R.string.label_task_save))
+                        Text(text = stringResource(id = CR.string.label_task_save))
                     }
                 }
 
@@ -117,7 +114,7 @@ fun SaveTaskScreen(viewModel: SaveTaskViewModel?) {
 @Composable
 fun TitleItem(viewModel: SaveTaskViewModel?, titleText: State<String?>) {
     Text(
-        text = stringResource(R.string.label_task_title),
+        text = stringResource(CR.string.label_task_title),
         style = TextTitleStyle,
         modifier = Modifier.fillMaxWidth()
     )
@@ -144,7 +141,7 @@ fun TitleItem(viewModel: SaveTaskViewModel?, titleText: State<String?>) {
 fun DescriptionItem() {
     var descriptionText by remember { mutableStateOf("") }
     Text(
-        text = stringResource(R.string.label_task_description),
+        text = stringResource(CR.string.label_task_description),
         style = TextTitleStyle,
         modifier = Modifier.fillMaxWidth()
     )
@@ -166,12 +163,12 @@ fun DescriptionItem() {
 @Composable
 fun DateOfCompletionItem(viewModel: SaveTaskViewModel?, date: State<Date?>) {
     Text(
-        text = stringResource(R.string.label_task_doc),
+        text = stringResource(CR.string.label_task_doc),
         style = TextTitleStyle,
         modifier = Modifier.fillMaxWidth()
     )
     val label = if (date.value == null) {
-        stringResource(id = R.string.label_hint_date)
+        stringResource(id = CR.string.label_hint_date)
     } else {
         val calendar = Calendar.getInstance()
         calendar.time = date.value!!
