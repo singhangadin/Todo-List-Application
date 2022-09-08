@@ -48,11 +48,11 @@ fun SaveTaskScreen(viewModel: SaveTaskViewModel, onBackPress: () -> Unit) {
     MaterialTheme {
         val scaffoldState: ScaffoldState = rememberScaffoldState()
         val coroutineScope: CoroutineScope = rememberCoroutineScope()
+        val uiState = viewModel.uiState.collectAsState(initial = SaveTaskUIState.HideLoader)
 
         Scaffold(
             scaffoldState = scaffoldState
         ) {
-            val uiState = viewModel.uiState.collectAsState(initial = SaveTaskUIState.HideLoader)
             Box(modifier = Modifier
                 .fillMaxHeight()
                 .fillMaxWidth()

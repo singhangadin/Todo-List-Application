@@ -4,6 +4,7 @@
     <dimen name="heading_text_size">24sp</dimen>
 
     <dimen name="margin_tiny">4dp</dimen>
+    <dimen name="margin_smaller">6dp</dimen>
     <dimen name="margin_small">8dp</dimen>
     <dimen name="margin_regular">16dp</dimen>
     <dimen name="margin_large">24dp</dimen>
