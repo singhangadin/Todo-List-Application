@@ -10,6 +10,7 @@ import `in`.singhangad.ui_common.listtask.uistate.TaskListUIState
 import `in`.singhangad.ui_common.listtask.viewmodel.TaskListViewModel
 import `in`.singhangad.ui_common.savetask.uistate.SaveTaskUIState
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
@@ -30,14 +31,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.onSubscription
-import kotlinx.coroutines.launch
 
 @Composable
 fun TaskListScreen(viewModel: TaskListViewModel, navigateSave: (String?) -> Unit) {
     val scaffoldState: ScaffoldState = rememberScaffoldState()
-    val coroutineScope: CoroutineScope = rememberCoroutineScope()
     val uiState = viewModel.uiState.onSubscription {
         viewModel.loadData(true)
     }.collectAsState(initial = TaskListUIState.HideLoader)
@@ -64,14 +62,6 @@ fun TaskListScreen(viewModel: TaskListViewModel, navigateSave: (String?) -> Unit
                     .fillMaxHeight(),
                 contentAlignment = Alignment.Center
             ) {
-                val data = viewModel.taskList.observeAsState()
-
-                if (!data.value.isNullOrEmpty()) {
-                    TaskList(data = data.value ?: mutableListOf()) { taskId ->
-                        viewModel.updateTask(taskId)
-                    }
-                }
-
                 when(uiState.value) {
                     TaskListUIState.HideEmptyView -> { }
                     TaskListUIState.HideLoader -> {  }
@@ -80,8 +70,8 @@ fun TaskListScreen(viewModel: TaskListViewModel, navigateSave: (String?) -> Unit
                         CircularProgressIndicator(Modifier.align(Alignment.Center))
 
                     is TaskListUIState.ShowMessage -> {
-                        val message = stringResource(id = (uiState.value as SaveTaskUIState.ShowMessage).message)
-                        coroutineScope.launch {
+                        val message = stringResource(id = (uiState.value as TaskListUIState.ShowMessage).message)
+                        LaunchedEffect(scaffoldState.snackbarHostState) {
                             scaffoldState.snackbarHostState.showSnackbar(
                                 message = message
                             )
@@ -90,6 +80,27 @@ fun TaskListScreen(viewModel: TaskListViewModel, navigateSave: (String?) -> Unit
                     is TaskListUIState.ShowSaveTaskScreen -> {
                         navigateSave.invoke((uiState.value as TaskListUIState.ShowSaveTaskScreen).taskId)
                     }
+                }
+
+                val data = viewModel.taskList.observeAsState()
+
+                if (!data.value.isNullOrEmpty()) {
+                    TaskList(data = data.value ?: mutableListOf(), { id, taskId ->
+                        when(id) {
+                            CR.string.option_delete ->
+                                viewModel.deleteTask(taskId)
+
+                            CR.string.option_pin_item ->
+                                viewModel.pinItem(taskId)
+
+                            CR.string.option_unpin_item ->
+                                viewModel.unPinItem(taskId)
+                        }
+                    }) { taskId ->
+                        viewModel.updateTask(taskId)
+                    }
+                } else {
+                    EmptyView()
                 }
             }
         }
@@ -131,7 +142,32 @@ fun EmptyView() {
 }
 
 @Composable
-fun TaskList(data: List<TaskListItem>, onItemClick: (String) -> Unit) {
+fun ActionMenu(expanded: MutableState<Boolean>, task: TaskListItem, menuItemClick: (Int, String) -> Unit){
+    DropdownMenu(
+        expanded = expanded.value,
+        onDismissRequest = { expanded.value = false }
+    ) {
+        val id = if (task.itemPinned) {
+            CR.string.option_unpin_item
+        } else {
+            CR.string.option_pin_item
+        }
+        DropdownMenuItem(onClick = {
+            menuItemClick(id, task.itemId)
+        }) {
+            Text(stringResource(id =
+                id
+            ))
+        }
+        DropdownMenuItem(onClick = { menuItemClick(CR.string.option_delete, task.itemId) }) {
+            Text(stringResource(id = CR.string.option_delete))
+        }
+    }
+}
+
+@Composable
+fun TaskList(data: List<TaskListItem>, menuItemClick: (Int, String) -> Unit, onItemClick: (String) -> Unit) {
+
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         modifier =
@@ -149,9 +185,11 @@ fun TaskList(data: List<TaskListItem>, onItemClick: (String) -> Unit) {
             }, key = { task -> task.itemId }) { item ->
             when (item.itemType) {
                 ItemType.HEADER -> TaskHeaderItem(item)
-                ItemType.TASK_ITEM -> TaskItem(item) {
-                    onItemClick(it)
-                }
+                ItemType.TASK_ITEM ->
+                    TaskItem(
+                        item,
+                        menuItemClick = menuItemClick
+                    ) { onItemClick(it) }
             }
         }
     }
@@ -159,7 +197,16 @@ fun TaskList(data: List<TaskListItem>, onItemClick: (String) -> Unit) {
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun TaskItem(taskListItem: TaskListItem, onClick: (String) -> Unit) {
+fun TaskItem(taskListItem: TaskListItem, menuItemClick: (Int, String) -> Unit, onClick: (String) -> Unit) {
+    val expanded = remember {
+        mutableStateOf(false)
+    }
+    ActionMenu(
+        expanded = expanded,
+        taskListItem,
+        menuItemClick
+    )
+
     Card(elevation = 3.dp,
         modifier = Modifier
             .fillMaxWidth()
@@ -188,11 +235,16 @@ fun TaskItem(taskListItem: TaskListItem, onClick: (String) -> Unit) {
             Image(
                 painter = painterResource(id = CR.drawable.ic_action_more),
                 contentDescription = "" ,
-                modifier = Modifier.constrainAs(moreOptions) {
-                    top.linkTo(parent.top)
-                    start.linkTo(labelTitle.end)
-                    end.linkTo(parent.end)
-                }
+                modifier = Modifier
+                    .constrainAs(moreOptions) {
+                        top.linkTo(parent.top)
+                        start.linkTo(labelTitle.end)
+                        end.linkTo(parent.end)
+                    }
+                    .clickable(
+                        enabled = true,
+                        onClick = { expanded.value = true }
+                    )
             )
 
             Text(
@@ -240,7 +292,7 @@ fun TaskListItemPreview() {
         "Title",
         "Description",
         false
-    ), { })
+    ),{ _,_ -> }, { })
 }
 
 @Preview

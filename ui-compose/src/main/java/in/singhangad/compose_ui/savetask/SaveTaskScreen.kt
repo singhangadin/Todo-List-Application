@@ -48,7 +48,6 @@ fun SaveTaskScreen(viewModel: SaveTaskViewModel, taskId: String?, onBackPress: (
 
     MaterialTheme {
         val scaffoldState: ScaffoldState = rememberScaffoldState()
-        val coroutineScope: CoroutineScope = rememberCoroutineScope()
         val uiState = viewModel.uiState.onSubscription {
             viewModel.init(taskId)
         }.collectAsState(initial = SaveTaskUIState.HideLoader)
@@ -74,7 +73,7 @@ fun SaveTaskScreen(viewModel: SaveTaskViewModel, taskId: String?, onBackPress: (
 
                     is SaveTaskUIState.ShowMessage -> {
                         val message = stringResource(id = (uiState.value as SaveTaskUIState.ShowMessage).message)
-                        coroutineScope.launch {
+                        LaunchedEffect(scaffoldState.snackbarHostState) {
                             scaffoldState.snackbarHostState.showSnackbar(
                                 message = message
                             )
