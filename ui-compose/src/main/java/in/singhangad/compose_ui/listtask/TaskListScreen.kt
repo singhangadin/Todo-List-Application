@@ -8,7 +8,6 @@ import `in`.singhangad.ui_common.listtask.entity.ItemType
 import `in`.singhangad.ui_common.listtask.entity.TaskListItem
 import `in`.singhangad.ui_common.listtask.uistate.TaskListUIState
 import `in`.singhangad.ui_common.listtask.viewmodel.TaskListViewModel
-import `in`.singhangad.ui_common.savetask.uistate.SaveTaskUIState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -201,12 +200,6 @@ fun TaskItem(taskListItem: TaskListItem, menuItemClick: (Int, String) -> Unit, o
     val expanded = remember {
         mutableStateOf(false)
     }
-    ActionMenu(
-        expanded = expanded,
-        taskListItem,
-        menuItemClick
-    )
-
     Card(elevation = 3.dp,
         modifier = Modifier
             .fillMaxWidth()
@@ -231,21 +224,32 @@ fun TaskItem(taskListItem: TaskListItem, menuItemClick: (Int, String) -> Unit, o
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
-
-            Image(
-                painter = painterResource(id = CR.drawable.ic_action_more),
-                contentDescription = "" ,
+            Box (
                 modifier = Modifier
                     .constrainAs(moreOptions) {
                         top.linkTo(parent.top)
                         start.linkTo(labelTitle.end)
                         end.linkTo(parent.end)
                     }
-                    .clickable(
-                        enabled = true,
-                        onClick = { expanded.value = true }
-                    )
-            )
+            ){
+                Image(
+                    painter = painterResource(id = CR.drawable.ic_action_more),
+                    contentDescription = "",
+                    modifier = Modifier
+                        .clickable(
+                            enabled = true,
+                            onClick = { expanded.value = true }
+                        )
+                )
+                ActionMenu(
+                    expanded = expanded,
+                    task = taskListItem,
+                    menuItemClick = { id, taskId ->
+                        expanded.value = false
+                        menuItemClick(id, taskId)
+                    }
+                )
+            }
 
             Text(
                 text = taskListItem.itemDescription?:"",
