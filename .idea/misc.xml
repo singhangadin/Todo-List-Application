@@ -20,6 +20,7 @@
         <entry key="ui-xml/src/main/res/layout/fragment_task_list.xml" value="0.1" />
         <entry key="ui-xml/src/main/res/layout/list_item_heading.xml" value="0.1" />
         <entry key="ui-xml/src/main/res/layout/list_item_task.xml" value="0.18723404255319148" />
+        <entry key="ui-xml/src/main/res/menu/task_overflow_menu.xml" value="0.1" />
         <entry key="ui/src/main/res/layout/fragment_save_task.xml" value="0.15625" />
         <entry key="ui/src/main/res/layout/fragment_task_list.xml" value="0.15625" />
         <entry key="ui/src/main/res/layout/list_item_heading.xml" value="0.15625" />

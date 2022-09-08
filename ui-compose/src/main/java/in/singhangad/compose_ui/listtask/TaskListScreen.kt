@@ -8,6 +8,7 @@ import `in`.singhangad.ui_common.listtask.entity.ItemType
 import `in`.singhangad.ui_common.listtask.entity.TaskListItem
 import `in`.singhangad.ui_common.listtask.uistate.TaskListUIState
 import `in`.singhangad.ui_common.listtask.viewmodel.TaskListViewModel
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -164,6 +165,7 @@ fun ActionMenu(expanded: MutableState<Boolean>, task: TaskListItem, menuItemClic
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TaskList(data: List<TaskListItem>, menuItemClick: (Int, String) -> Unit, onItemClick: (String) -> Unit) {
 
@@ -182,13 +184,15 @@ fun TaskList(data: List<TaskListItem>, menuItemClick: (Int, String) -> Unit, onI
                     ItemType.TASK_ITEM -> GridItemSpan(1)
                 }
             }, key = { task -> task.itemId }) { item ->
-            when (item.itemType) {
-                ItemType.HEADER -> TaskHeaderItem(item)
-                ItemType.TASK_ITEM ->
-                    TaskItem(
-                        item,
-                        menuItemClick = menuItemClick
-                    ) { onItemClick(it) }
+            Row(Modifier.animateItemPlacement()) {
+                when (item.itemType) {
+                    ItemType.HEADER -> TaskHeaderItem(item)
+                    ItemType.TASK_ITEM ->
+                        TaskItem(
+                            item,
+                            menuItemClick = menuItemClick
+                        ) { onItemClick(it) }
+                }
             }
         }
     }
