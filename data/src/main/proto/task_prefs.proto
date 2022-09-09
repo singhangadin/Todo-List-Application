@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option java_package = "com.example.data.datasource.datastore.entity";
+option java_multiple_files = true;
+
+message Task {
+  sint64 taskId = 1;
+  string taskTitle = 2;
+  string taskDescription = 3;
+  bool isPinned = 4;
+  sint64 createdAt = 5;
+  sint64 endDate = 6;
+}
+
+message TaskList {
+  map<string, Task> tasks = 1;
+}
