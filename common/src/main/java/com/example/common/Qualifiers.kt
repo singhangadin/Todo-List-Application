@@ -16,6 +16,10 @@ annotation class FileDataSource
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
+annotation class DataStoreDataSource
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
 annotation class DefaultRepository
 
 @Qualifier
