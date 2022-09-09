@@ -7,12 +7,12 @@ import com.example.data.repository.AndroidLogService
 import com.example.data.repository.CachedTaskRepository
 import com.example.data.repository.DefaultTaskRepository
 import com.example.data.datasource.base.TaskDataSource
+import com.example.data.datasource.datastore.TaskDataStoreSource
 import com.example.data.datasource.db.DBTaskDataSource
 import com.example.data.datasource.db.TodoDatabase
 import com.example.data.datasource.db.dao.TaskDao
 import com.example.data.datasource.file.FileTaskDataSource
 import com.example.data.datasource.inmemory.InMemoryTaskDataSource
-import com.example.data.datasource.remote.RemoteTaskDataSource
 import com.example.data.datasource.remote.service.TodoService
 import com.example.domain.contract.LogService
 import com.example.domain.contract.TaskRepositoryContract
@@ -136,6 +136,13 @@ class ApplicationModule {
     @FileDataSource
     fun provideFileTaskDataSource(gson: Gson, @ApplicationContext context: Context): TaskDataSource {
         return FileTaskDataSource(gson, context.filesDir.path + "/tasks.txt")
+    }
+
+    @Singleton
+    @Provides
+    @DataStoreDataSource
+    fun provideTaskDataStoreSource(@ApplicationContext context: Context): TaskDataSource {
+        return TaskDataStoreSource(context)
     }
 
     @Singleton
