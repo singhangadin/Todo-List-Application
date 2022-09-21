@@ -1,4 +1,4 @@
-package in.singhangad.shared_data
+package `in`.singhangad.shared_data
 
 interface Platform {
     val name: String

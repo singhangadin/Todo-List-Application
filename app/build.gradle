@@ -7,12 +7,12 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.example.todo_list_application"
         minSdk 21
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0.0"
 
@@ -63,12 +63,13 @@ android {
 }
 
 dependencies {
-    def nav_version = "2.5.1"
+    def nav_version = "2.5.2"
     def room_version = "2.4.3"
     def lifecycle_version = "2.5.1"
 
     // Local Modules
     implementation project(path: ':data')
+    implementation project(path: ':shared-data')
     implementation project(path: ':domain')
     implementation project(path: ':common')
 
@@ -78,8 +79,8 @@ dependencies {
     implementation 'androidx.activity:activity-compose:1.5.1'
 
     // Core
-    implementation 'androidx.core:core-ktx:1.8.0'
-    implementation 'androidx.appcompat:appcompat:1.5.0'
+    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation "androidx.fragment:fragment-ktx:1.5.2"
     implementation 'com.google.android.material:material:1.6.1'
 
