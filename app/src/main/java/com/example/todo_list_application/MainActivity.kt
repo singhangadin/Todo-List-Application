@@ -1,11 +1,11 @@
 package com.example.todo_list_application
 
-import com.example.todo_list_application.databinding.ActivityMainBinding
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
+import com.example.todo_list_application.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

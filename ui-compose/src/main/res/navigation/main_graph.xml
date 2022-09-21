@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_graph"
+    app:startDestination="@id/taskListFragment">
+
+    <fragment
+        android:id="@+id/taskListFragment"
+        android:name="in.singhangad.compose_ui.listtask.fragment.TaskListFragment"
+        android:label="TaskListFragment" >
+        <action
+            android:id="@+id/action_taskListFragment_to_saveTaskFragment"
+            app:destination="@id/saveTaskFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/saveTaskFragment"
+        android:name="in.singhangad.compose_ui.savetask.fragment.SaveTaskFragment"
+        android:label="SaveTaskFragment" >
+        <argument
+            android:name="taskId"
+            app:nullable="true"
+            app:argType="string"/>
+    </fragment>
+</navigation>

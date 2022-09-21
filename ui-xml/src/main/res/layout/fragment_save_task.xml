@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="in.singhangad.ui_common.savetask.viewmodel.SaveTaskViewModel" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/margin_regular"
+                style="@style/Theme.Default.Page">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/labelTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/titleInput"
+                    style="@style/Style.Text.Title"
+                    android:text="@string/label_task_title"/>
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/titleInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_tiny"
+                    android:text="@={viewModel.taskTitle}"
+                    android:singleLine="true"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/labelTitle"
+                    app:layout_constraintBottom_toTopOf="@id/labelDescription"
+                    tools:text="Task Title"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/labelDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_regular"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/titleInput"
+                    app:layout_constraintBottom_toTopOf="@id/descriptionInput"
+                    style="@style/Style.Text.Title"
+                    android:text="@string/label_task_description"/>
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/descriptionInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_tiny"
+                    android:inputType="text|textMultiLine"
+                    android:gravity="top"
+                    android:lines="4"
+                    android:scrollbars="vertical"
+                    android:text="@={viewModel.taskDescription}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/labelDescription"
+                    app:layout_constraintBottom_toTopOf="@id/labelEndDate"
+                    tools:text="Task Description"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/labelEndDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_regular"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/descriptionInput"
+                    app:layout_constraintBottom_toTopOf="@id/endDateInput"
+                    style="@style/Style.Text.Title"
+                    android:text="@string/label_task_doc"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/endDateInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_tiny"
+                    android:onClick="@{()->viewModel.showDatePicker()}"
+                    app:formattedDateText="@{viewModel.endDate}"
+                    android:layout_marginBottom="@dimen/margin_large"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/labelEndDate"
+                    app:layout_constraintBottom_toTopOf="@id/emptyView"
+                    android:hint="@string/label_hint_date"/>
+
+                <FrameLayout
+                    android:id="@+id/emptyView"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/actionSave"
+                    app:layout_constraintTop_toBottomOf="@id/endDateInput"/>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/actionSave"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{()->viewModel.saveTask()}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/emptyView"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:text="@string/label_task_save"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+        <FrameLayout
+            android:id="@+id/progressLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"/>
+        </FrameLayout>
+    </FrameLayout>
+</layout>
