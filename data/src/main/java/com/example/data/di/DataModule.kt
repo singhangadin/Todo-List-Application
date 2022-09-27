@@ -1,17 +1,16 @@
 package com.example.data.di
 
-import com.example.common.*
+import `in`.singhangad.shared_common.*
+import `in`.singhangad.shared_domain.contract.TaskRepositoryContract
 import com.example.data.datasource.base.TaskDataSource
 import com.example.data.datasource.datastore.TaskDataStoreSource
 import com.example.data.datasource.db.DBTaskDataSource
 import com.example.data.datasource.db.TodoDatabase
-import com.example.data.datasource.db.dao.TaskDao
 import com.example.data.datasource.file.FileTaskDataSource
 import com.example.data.datasource.inmemory.InMemoryTaskDataSource
 import com.example.data.datasource.remote.RemoteTaskDataSource
 import com.example.data.repository.CachedTaskRepository
 import com.example.data.repository.DefaultTaskRepository
-import com.example.domain.contract.TaskRepositoryContract
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 

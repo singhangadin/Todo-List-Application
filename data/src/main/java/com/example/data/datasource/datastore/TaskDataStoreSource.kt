@@ -1,12 +1,12 @@
 package com.example.data.datasource.datastore
 
+import `in`.singhangad.shared_domain.entity.Task
 import android.content.Context
 import androidx.annotation.VisibleForTesting
 import com.example.data.datasource.base.TaskDataSource
 import com.example.data.datasource.datastore.entity.TaskList
 import com.example.data.datasource.datastore.entity.Task as DSTask
 
-import com.example.domain.entity.Task
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 

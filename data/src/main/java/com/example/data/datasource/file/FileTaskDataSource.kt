@@ -1,7 +1,7 @@
 package com.example.data.datasource.file
 
+import `in`.singhangad.shared_domain.entity.Task
 import com.example.data.datasource.base.TaskDataSource
-import com.example.domain.entity.Task
 import android.text.TextUtils
 import com.google.gson.Gson
 import kotlinx.coroutines.delay

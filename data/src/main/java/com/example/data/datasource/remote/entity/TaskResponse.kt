@@ -1,7 +1,7 @@
 package com.example.data.datasource.remote.entity
 
+import `in`.singhangad.shared_domain.entity.Task
 import com.example.data.Utils
-import com.example.domain.entity.Task
 import com.google.gson.annotations.SerializedName
 import java.util.*
 
@@ -30,8 +30,8 @@ fun TaskResponse.toTask(): Task {
                 "No Title",
                 this.data.taskDescription,
                 this.data.completed,
-                Utils.getConvertedDate(this.data.createdAt)?:Date(),
-                Date()
+                Utils.getConvertedDate(this.data.createdAt)?.time?:Date().time,
+                Date().time
         )
 }
 
@@ -41,7 +41,7 @@ fun TaskData.toTask(): Task {
                 "No Title",
                 this.taskDescription,
                 this.completed,
-                Utils.getConvertedDate(this.createdAt)?:Date(),
-                Date()
+                Utils.getConvertedDate(this.createdAt)?.time?:Date().time,
+                Date().time
         )
 }

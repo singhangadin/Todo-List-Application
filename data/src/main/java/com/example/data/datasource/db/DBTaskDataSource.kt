@@ -1,10 +1,10 @@
 package com.example.data.datasource.db
 
+import `in`.singhangad.shared_domain.entity.Task
 import com.example.data.datasource.base.TaskDataSource
 import com.example.data.datasource.db.dao.TaskDao
 import com.example.data.datasource.db.entity.fromDomainTask
 import com.example.data.datasource.db.entity.toDomainTask
-import com.example.domain.entity.Task
 
 class DBTaskDataSource constructor(private val taskDao: TaskDao): TaskDataSource {
     override suspend fun insertTask(task: Task): Task? {

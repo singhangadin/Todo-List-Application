@@ -1,11 +1,11 @@
 package com.example.todo_list_application.di
 
+import `in`.singhangad.shared_common.DefaultDispatcher
+import `in`.singhangad.shared_common.IODispatcher
 import androidx.room.Room
-import com.example.common.*
 import com.example.data.repository.AndroidLogService
 import com.example.data.datasource.db.TodoDatabase
 import com.example.data.datasource.remote.service.TodoService
-import com.example.domain.contract.LogService
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
@@ -53,5 +53,5 @@ val appModule = module {
 
     single(qualifier = DefaultDispatcher()) { Dispatchers.Default }
 
-    single<LogService> { AndroidLogService() }
+    single<`in`.singhangad.shared_domain.contract.LogService> { AndroidLogService() }
 }

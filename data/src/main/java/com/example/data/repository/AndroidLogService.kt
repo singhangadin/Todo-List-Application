@@ -1,9 +1,9 @@
 package com.example.data.repository
 
-import com.example.domain.contract.LogService
+import `in`.singhangad.shared_domain.contract.LogService
 import android.util.Log
 
-class AndroidLogService : LogService {
+class AndroidLogService : `in`.singhangad.shared_domain.contract.LogService {
     override fun logException(tag: String, throwable: Throwable) {
         Log.e(tag, null, throwable)
     }
