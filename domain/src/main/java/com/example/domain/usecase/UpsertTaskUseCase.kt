@@ -1,9 +1,8 @@
 package com.example.domain.usecase
 
 import com.example.domain.entity.Task
-import javax.inject.Inject
 
-class UpsertTaskUseCase @Inject constructor(
+class UpsertTaskUseCase constructor(
     private val createTaskUseCase: CreateTaskUseCase,
     private val updateTaskUseCase: UpdateTaskUseCase
 ) {

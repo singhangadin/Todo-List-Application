@@ -9,5 +9,6 @@ java {
 }
 
 dependencies {
-    implementation 'javax.inject:javax.inject:1'
+    def koin_version= "3.2.1"
+    implementation "io.insert-koin:koin-core:$koin_version"
 }

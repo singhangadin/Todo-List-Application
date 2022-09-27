@@ -8,14 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.ui.setDisplayHomeAsUpEnabled
-import dagger.hilt.android.AndroidEntryPoint
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-@AndroidEntryPoint
 class TaskListFragment: Fragment() {
-    private val viewModel by viewModels<TaskListViewModel>()
+    private val viewModel by viewModel<TaskListViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,

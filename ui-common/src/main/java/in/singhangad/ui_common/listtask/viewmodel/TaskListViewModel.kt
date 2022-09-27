@@ -13,23 +13,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.common.DefaultDispatcher
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class TaskListViewModel @Inject constructor(
+class TaskListViewModel constructor(
     private val getDateSortedTaskUseCase: GetDateSortedTaskUseCase,
     private val pinTaskUseCase: PinTaskUseCase,
     private val unPinTaskUseCase: UnPinTaskUseCase,
     private val deleteTaskUseCase: DeleteTaskUseCase,
-    @DefaultDispatcher private val dispatcher: CoroutineDispatcher = Dispatchers.Default
+    private val dispatcher: CoroutineDispatcher = Dispatchers.Default
 ): ViewModel() {
     private val _taskList = MutableLiveData<List<TaskListItem>>()
 
