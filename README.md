@@ -6,7 +6,7 @@ Feature Roadmap:
 3. Kotlin everywhere
 4. Room Database
 5. Proto DataStore
-6. Hilt
+6. Koin
 7. Architecture = Clean + MVVM
 8. Navigation component
 9. Unit, Functional, End to end testing
