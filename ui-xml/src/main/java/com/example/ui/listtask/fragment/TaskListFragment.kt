@@ -13,7 +13,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -21,14 +20,13 @@ import androidx.navigation.fragment.findNavController
 import com.example.ui.R
 import `in`.singhangad.ui_common.R as RC
 import com.google.android.material.snackbar.Snackbar
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-@AndroidEntryPoint
 class TaskListFragment : Fragment(), ListItemClickListener {
 
-    val viewModel by viewModels<TaskListViewModel>()
+    val viewModel by viewModel<TaskListViewModel>()
 
     private lateinit var binding: FragmentTaskListBinding
 

@@ -5,11 +5,8 @@ import com.example.data.datasource.db.dao.TaskDao
 import com.example.data.datasource.db.entity.fromDomainTask
 import com.example.data.datasource.db.entity.toDomainTask
 import com.example.domain.entity.Task
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class DBTaskDataSource @Inject constructor(private val taskDao: TaskDao): TaskDataSource {
+class DBTaskDataSource constructor(private val taskDao: TaskDao): TaskDataSource {
     override suspend fun insertTask(task: Task): Task? {
         val id = taskDao.insertTask(task.fromDomainTask())
         return taskDao.getTaskWithId(id)?.toDomainTask()

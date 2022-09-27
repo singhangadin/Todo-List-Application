@@ -8,11 +8,8 @@ import kotlinx.coroutines.delay
 import java.io.File
 import java.io.FileReader
 import java.io.FileWriter
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class FileTaskDataSource @Inject constructor(private val gson: Gson, private val filePath: String):
+class FileTaskDataSource constructor(private val gson: Gson, private val filePath: String):
     TaskDataSource {
 
     override suspend fun insertTask(task: Task): Task? {
