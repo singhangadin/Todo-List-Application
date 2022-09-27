@@ -1,14 +1,14 @@
-package com.example.domain.usecase
+package `in`.singhangad.shared_domain.usecase
 
-import com.example.domain.entity.Task
-import com.example.domain.exception.DataNotFoundException
-import com.example.domain.repository.FakeTaskRepository
+import `in`.singhangad.shared_domain.entity.Task
+import `in`.singhangad.shared_domain.exception.DataNotFoundException
+import `in`.singhangad.shared_domain.repository.FakeTaskRepository
 import kotlinx.coroutines.test.runTest
-import org.junit.After
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
-import java.util.*
+import kotlinx.datetime.Clock
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+import kotlin.test.assertTrue
 
 
 class DeleteTaskUseCaseTest {
@@ -16,7 +16,7 @@ class DeleteTaskUseCaseTest {
     private lateinit var deleteTaskUseCase: DeleteTaskUseCase
     private lateinit var fakeTaskRepository: FakeTaskRepository
 
-    @Before
+    @BeforeTest
     fun init() {
         fakeTaskRepository = FakeTaskRepository()
         deleteTaskUseCase = DeleteTaskUseCase(fakeTaskRepository)
@@ -27,19 +27,20 @@ class DeleteTaskUseCaseTest {
         val testTask = Task(
             null, "Title",
             "Description", false,
-            Date(), Date()
+            Clock.System.now().toEpochMilliseconds(),
+            Clock.System.now().toEpochMilliseconds()
         )
 
         val savedTask = fakeTaskRepository.createNewTask(task = testTask)
 
-        Assert.assertTrue(fakeTaskRepository.getTasks(forceUpdate = false).getOrNull()?.size == 1)
+        assertTrue(fakeTaskRepository.getTasks(forceUpdate = false).getOrNull()?.size == 1)
 
         val result = deleteTaskUseCase.invoke(DeleteTaskUseCase.UseCaseParams(
             savedTask.getOrNull()?.taskId!!
         ))
 
-        Assert.assertTrue(result.isSuccess)
-        Assert.assertTrue(fakeTaskRepository.getTasks(forceUpdate = false).getOrNull()!!.isEmpty())
+        assertTrue(result.isSuccess)
+        assertTrue(fakeTaskRepository.getTasks(forceUpdate = false).getOrNull()!!.isEmpty())
     }
 
     @Test
@@ -47,20 +48,21 @@ class DeleteTaskUseCaseTest {
         val testTask = Task(
             "1", "Title",
             "Description", false,
-            Date(), Date()
+            Clock.System.now().toEpochMilliseconds(),
+            Clock.System.now().toEpochMilliseconds()
         )
 
-        Assert.assertTrue(fakeTaskRepository.getTasks(forceUpdate = false).getOrNull()?.size == 0)
+        assertTrue(fakeTaskRepository.getTasks(forceUpdate = false).getOrNull()?.size == 0)
 
         val result = deleteTaskUseCase.invoke(DeleteTaskUseCase.UseCaseParams(
             testTask.taskId!!
         ))
 
-        Assert.assertTrue(result.isFailure)
-        Assert.assertTrue(result.exceptionOrNull() is DataNotFoundException)
+        assertTrue(result.isFailure)
+        assertTrue(result.exceptionOrNull() is DataNotFoundException)
     }
 
-    @After
+    @AfterTest
     fun tearDown() {
         fakeTaskRepository.clear()
     }

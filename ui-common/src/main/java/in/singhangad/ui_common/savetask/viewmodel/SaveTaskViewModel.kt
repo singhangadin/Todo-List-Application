@@ -1,9 +1,9 @@
 package `in`.singhangad.ui_common.savetask.viewmodel
 
+import `in`.singhangad.shared_domain.entity.Task
+import `in`.singhangad.shared_domain.usecase.GetTaskUseCase
+import `in`.singhangad.shared_domain.usecase.UpsertTaskUseCase
 import `in`.singhangad.ui_common.R
-import com.example.domain.entity.Task
-import com.example.domain.usecase.GetTaskUseCase
-import com.example.domain.usecase.UpsertTaskUseCase
 import `in`.singhangad.ui_common.savetask.uistate.SaveTaskUIState
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,9 +16,9 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 class SaveTaskViewModel constructor(
-        private val saveTaskUseCase: UpsertTaskUseCase,
-        private val getTaskUseCase: GetTaskUseCase,
-        private val dispatcher: CoroutineDispatcher = Dispatchers.Default
+    private val saveTaskUseCase: UpsertTaskUseCase,
+    private val getTaskUseCase: GetTaskUseCase,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.Default
 ): ViewModel() {
     private val taskId = MutableLiveData<String>()
     val taskTitle = MutableLiveData<String>()
@@ -41,7 +41,7 @@ class SaveTaskViewModel constructor(
                     val task = taskResult.getOrNull()!!
                     taskTitle.postValue(task.taskTitle)
                     taskDescription.postValue(task.taskDescription)
-                    endDate.postValue(task.endDate)
+                    endDate.postValue(Date(task.endDate))
                     _uiState.emit(SaveTaskUIState.HideLoader)
                 } else {
                     _uiState.emit(SaveTaskUIState.HideLoader)
@@ -93,8 +93,8 @@ class SaveTaskViewModel constructor(
             taskTitle = taskTitle.value?:"",
             taskDescription = taskDescription.value,
             isPinned = oldTask?.isPinned?:false,
-            createdAt = oldTask?.createdAt?:Date(),
-            endDate = endDate.value!!
+            createdAt = oldTask?.createdAt?:Date().time,
+            endDate = endDate.value?.time!!
         )
     }
 

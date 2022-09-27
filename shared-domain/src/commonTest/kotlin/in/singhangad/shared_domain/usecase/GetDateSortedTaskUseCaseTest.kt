@@ -1,13 +1,12 @@
-package com.example.domain.usecase
+package `in`.singhangad.shared_domain.usecase
 
-import com.example.domain.entity.Task
-import com.example.domain.repository.FakeTaskRepository
+import `in`.singhangad.shared_domain.entity.Task
+import `in`.singhangad.shared_domain.repository.FakeTaskRepository
 import kotlinx.coroutines.test.runTest
-import org.junit.After
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
+import kotlinx.datetime.Clock
 import java.util.*
+import kotlin.random.Random
+import kotlin.test.*
 
 
 class GetDateSortedTaskUseCaseTest {
@@ -15,7 +14,7 @@ class GetDateSortedTaskUseCaseTest {
     private lateinit var getTaskUseCase: GetDateSortedTaskUseCase
     private lateinit var fakeTaskRepository: FakeTaskRepository
 
-    @Before
+    @BeforeTest
     fun init() {
         fakeTaskRepository = FakeTaskRepository()
         getTaskUseCase = GetDateSortedTaskUseCase(fakeTaskRepository)
@@ -40,29 +39,29 @@ class GetDateSortedTaskUseCaseTest {
         }
 
         // Validate size of result data
-        Assert.assertEquals(list.size, items.size)
+        assertEquals(list.size, items.size)
 
         // Validate content in result data
         for (item in items) {
-            Assert.assertTrue(list.contains(item))
+            assertTrue(list.contains(item))
         }
 
         // Validate distinct
         val pinnedCount = items.count { it.isPinned }
         val unPinnedCount = items.count { !it.isPinned }
 
-        Assert.assertTrue(pinnedCount == getData[true]?.count())
-        Assert.assertTrue(unPinnedCount == getData[false]?.count())
+        assertTrue(pinnedCount == getData[true]?.count())
+        assertTrue(unPinnedCount == getData[false]?.count())
 
         // Validate Data is sorted
         getData.forEach { (_, values) ->
-            Assert.assertTrue(isSorted(values))
+            assertTrue(isSorted(values))
         }
     }
 
     private fun isSorted(items: List<Task>): Boolean {
         for (i in 0 until items.size - 1) {
-            if (items[i].createdAt.time > items[i + 1].createdAt.time) {
+            if (items[i].createdAt > items[i + 1].createdAt) {
                 return false
             }
         }
@@ -72,24 +71,20 @@ class GetDateSortedTaskUseCaseTest {
     private fun getRandomTasks(count: Int): List<Task> {
         val list = mutableListOf<Task>()
         for (i in 0 until count - 1) {
-            val randomNumber = Random().nextInt(Integer.MAX_VALUE)
-            val calendar = Calendar.getInstance()
-
-            calendar.add(Calendar.DAY_OF_YEAR, randomNumber % 365)
-            calendar.add(Calendar.MONTH, randomNumber % 12)
+            val randomNumber = Random.nextInt(Int.MAX_VALUE)
 
             list.add(
                 Task(
                     randomNumber.toString(),
                     "Task Title", "Task Description",
-                    randomNumber % 2 == 0, calendar.time,
-                    Date()
+                    randomNumber % 2 == 0, Clock.System.now().toEpochMilliseconds() + randomNumber,
+                    Clock.System.now().toEpochMilliseconds()
                 )
             )
         }
         return list
     }
 
-    @After
+    @AfterTest
     fun tearDown() = fakeTaskRepository.clear()
 }

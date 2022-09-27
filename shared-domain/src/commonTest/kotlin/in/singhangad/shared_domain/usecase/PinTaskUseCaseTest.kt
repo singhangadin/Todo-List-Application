@@ -1,14 +1,15 @@
-package com.example.domain.usecase
+package `in`.singhangad.shared_domain.usecase
 
-import com.example.domain.entity.Task
-import com.example.domain.exception.DataNotFoundException
-import com.example.domain.repository.FakeTaskRepository
+import `in`.singhangad.shared_domain.entity.Task
+import `in`.singhangad.shared_domain.exception.DataNotFoundException
+import `in`.singhangad.shared_domain.repository.FakeTaskRepository
 import kotlinx.coroutines.test.runTest
-import org.junit.After
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
+import kotlinx.datetime.Clock
 import java.util.*
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+import kotlin.test.assertTrue
 
 
 class PinTaskUseCaseTest {
@@ -16,7 +17,7 @@ class PinTaskUseCaseTest {
     private lateinit var pinTaskUseCase: PinTaskUseCase
     private lateinit var fakeTaskRepository: FakeTaskRepository
 
-    @Before
+    @BeforeTest
     fun init() {
         fakeTaskRepository = FakeTaskRepository()
         pinTaskUseCase = PinTaskUseCase(fakeTaskRepository)
@@ -27,18 +28,19 @@ class PinTaskUseCaseTest {
         val testTask = Task(
             "testId", "Title",
             "Description", false,
-            Date(), Date()
+            Clock.System.now().toEpochMilliseconds(),
+            Clock.System.now().toEpochMilliseconds()
         )
 
         val savedTask = fakeTaskRepository.createNewTask(task = testTask)
-        Assert.assertTrue(fakeTaskRepository.getTasks(forceUpdate = false).getOrNull()?.size == 1)
+        assertTrue(fakeTaskRepository.getTasks(forceUpdate = false).getOrNull()?.size == 1)
 
         val result = pinTaskUseCase.invoke(
             PinTaskUseCase.UseCaseParams(savedTask.getOrNull()?.taskId!!)
         )
 
-        Assert.assertTrue(result.isSuccess)
-        Assert.assertTrue(fakeTaskRepository.getTaskById(savedTask.getOrNull()?.taskId!!).getOrNull()?.isPinned!!)
+        assertTrue(result.isSuccess)
+        assertTrue(fakeTaskRepository.getTaskById(savedTask.getOrNull()?.taskId!!).getOrNull()?.isPinned!!)
     }
 
     @Test
@@ -46,20 +48,21 @@ class PinTaskUseCaseTest {
         val testTask = Task(
             "1", "Title",
             "Description", false,
-            Date(), Date()
+            Clock.System.now().toEpochMilliseconds(),
+            Clock.System.now().toEpochMilliseconds()
         )
 
         val savedTask = fakeTaskRepository.createNewTask(task = testTask)
-        Assert.assertTrue(fakeTaskRepository.getTasks(forceUpdate = false).getOrNull()?.size == 1)
+        assertTrue(fakeTaskRepository.getTasks(forceUpdate = false).getOrNull()?.size == 1)
 
         val result = pinTaskUseCase.invoke(
             PinTaskUseCase.UseCaseParams(savedTask.getOrNull()?.taskId!! + "test")
         )
-        Assert.assertTrue(result.isFailure)
-        Assert.assertTrue(result.exceptionOrNull() is DataNotFoundException)
+        assertTrue(result.isFailure)
+        assertTrue(result.exceptionOrNull() is DataNotFoundException)
     }
 
-    @After
+    @AfterTest
     fun tearDown() {
         fakeTaskRepository.clear()
     }

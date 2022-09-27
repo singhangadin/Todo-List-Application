@@ -44,8 +44,8 @@ dependencies {
     def coroutines_version = "1.6.4"
 
     // Local Modules
-    implementation project(path: ':domain')
-    implementation project(path: ':common')
+    implementation project(path: ':shared-domain')
+    implementation project(path: ':shared-common')
     implementation project(path: ':ui-common')
 
     // Core

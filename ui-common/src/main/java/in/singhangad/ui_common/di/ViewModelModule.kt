@@ -1,8 +1,8 @@
 package `in`.singhangad.ui_common.di
 
+import `in`.singhangad.shared_common.DefaultDispatcher
 import `in`.singhangad.ui_common.listtask.viewmodel.TaskListViewModel
 import `in`.singhangad.ui_common.savetask.viewmodel.SaveTaskViewModel
-import com.example.common.DefaultDispatcher
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

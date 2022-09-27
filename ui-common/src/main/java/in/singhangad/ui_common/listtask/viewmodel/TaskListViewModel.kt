@@ -1,13 +1,13 @@
 package `in`.singhangad.ui_common.listtask.viewmodel
 
+import `in`.singhangad.shared_domain.entity.Task
+import `in`.singhangad.shared_domain.usecase.DeleteTaskUseCase
+import `in`.singhangad.shared_domain.usecase.GetDateSortedTaskUseCase
+import `in`.singhangad.shared_domain.usecase.PinTaskUseCase
+import `in`.singhangad.shared_domain.usecase.UnPinTaskUseCase
 import `in`.singhangad.ui_common.R
 import `in`.singhangad.ui_common.listtask.entity.ItemType
 import `in`.singhangad.ui_common.listtask.entity.TaskListItem
-import com.example.domain.entity.Task
-import com.example.domain.usecase.DeleteTaskUseCase
-import com.example.domain.usecase.GetDateSortedTaskUseCase
-import com.example.domain.usecase.PinTaskUseCase
-import com.example.domain.usecase.UnPinTaskUseCase
 import `in`.singhangad.ui_common.listtask.uistate.TaskListUIState
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

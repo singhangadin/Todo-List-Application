@@ -45,8 +45,8 @@ dependencies {
     def compose_version = "1.2.1"
 
     // Local Modules
-    implementation project(path: ':domain')
-    implementation project(path: ':common')
+    implementation project(path: ':shared-domain')
+    implementation project(path: ':shared-common')
     implementation project(path: ':ui-common')
 
     // Core

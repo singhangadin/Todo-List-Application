@@ -1,8 +1,9 @@
-package com.example.domain.repository
+package `in`.singhangad.shared_domain.repository
 
-import com.example.domain.contract.TaskRepositoryContract
-import com.example.domain.entity.Task
-import com.example.domain.exception.DataNotFoundException
+import `in`.singhangad.shared_domain.contract.TaskRepositoryContract
+import `in`.singhangad.shared_domain.entity.Task
+import `in`.singhangad.shared_domain.exception.DataNotFoundException
+import kotlinx.datetime.Clock
 
 class FakeTaskRepository: TaskRepositoryContract {
 
@@ -31,7 +32,7 @@ class FakeTaskRepository: TaskRepositoryContract {
             Result.failure(Exception())
         } else {
             val newTask = if (task.taskId == null) {
-                task.copy(System.currentTimeMillis().toString())
+                task.copy(Clock.System.now().toEpochMilliseconds().toString())
             } else {
                 task
             }

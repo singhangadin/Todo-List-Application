@@ -1,14 +1,12 @@
-package com.example.domain.usecase
+package `in`.singhangad.shared_domain.usecase
 
-import com.example.domain.entity.Task
-import com.example.domain.exception.DataNotFoundException
-import com.example.domain.repository.FakeTaskRepository
+import `in`.singhangad.shared_domain.entity.Task
+import `in`.singhangad.shared_domain.exception.DataNotFoundException
+import `in`.singhangad.shared_domain.repository.FakeTaskRepository
 import kotlinx.coroutines.test.runTest
-import org.junit.After
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
+import kotlinx.datetime.Clock
 import java.util.*
+import kotlin.test.*
 
 
 class UnPinTaskUseCaseTest {
@@ -16,7 +14,7 @@ class UnPinTaskUseCaseTest {
     private lateinit var unPinTaskUseCase: UnPinTaskUseCase
     private lateinit var fakeTaskRepository: FakeTaskRepository
 
-    @Before
+    @BeforeTest
     fun init() {
         fakeTaskRepository = FakeTaskRepository()
         unPinTaskUseCase = UnPinTaskUseCase(fakeTaskRepository)
@@ -27,18 +25,19 @@ class UnPinTaskUseCaseTest {
         val testTask = Task(
             "testId", "Title",
             "Description", true,
-            Date(), Date()
+            Clock.System.now().toEpochMilliseconds(),
+            Clock.System.now().toEpochMilliseconds()
         )
 
         val savedTask = fakeTaskRepository.createNewTask(task = testTask)
-        Assert.assertTrue(fakeTaskRepository.getTasks(forceUpdate = false).getOrNull()?.size == 1)
+        assertTrue(fakeTaskRepository.getTasks(forceUpdate = false).getOrNull()?.size == 1)
 
         val result = unPinTaskUseCase.invoke(
             UnPinTaskUseCase.UseCaseParams(savedTask.getOrNull()?.taskId!!)
         )
 
-        Assert.assertTrue(result.isSuccess)
-        Assert.assertFalse(fakeTaskRepository.getTaskById(savedTask.getOrNull()?.taskId!!).getOrNull()?.isPinned!!)
+        assertTrue(result.isSuccess)
+        assertFalse(fakeTaskRepository.getTaskById(savedTask.getOrNull()?.taskId!!).getOrNull()?.isPinned!!)
     }
 
     @Test
@@ -46,20 +45,21 @@ class UnPinTaskUseCaseTest {
         val testTask = Task(
             "1", "Title",
             "Description", true,
-            Date(), Date()
+            Clock.System.now().toEpochMilliseconds(),
+            Clock.System.now().toEpochMilliseconds()
         )
 
         val savedTask = fakeTaskRepository.createNewTask(task = testTask)
-        Assert.assertTrue(fakeTaskRepository.getTasks(forceUpdate = false).getOrNull()?.size == 1)
+        assertTrue(fakeTaskRepository.getTasks(forceUpdate = false).getOrNull()?.size == 1)
 
         val result = unPinTaskUseCase.invoke(
             UnPinTaskUseCase.UseCaseParams(savedTask.getOrNull()?.taskId!! + "test")
         )
-        Assert.assertTrue(result.isFailure)
-        Assert.assertTrue(result.exceptionOrNull() is DataNotFoundException)
+        assertTrue(result.isFailure)
+        assertTrue(result.exceptionOrNull() is DataNotFoundException)
     }
 
-    @After
+    @AfterTest
     fun tearDown() {
         fakeTaskRepository.clear()
     }
