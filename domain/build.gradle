@@ -9,11 +9,12 @@ java {
 }
 
 dependencies {
+    def koin_version= "3.2.1"
     def coroutines_version = "1.6.4"
 
     implementation project(path: ':common')
 
-    implementation 'javax.inject:javax.inject:1'
+    implementation "io.insert-koin:koin-core:$koin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
 
     testImplementation 'junit:junit:4.13.2'

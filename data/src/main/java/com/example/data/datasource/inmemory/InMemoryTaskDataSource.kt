@@ -4,11 +4,8 @@ import com.example.data.datasource.base.TaskDataSource
 import com.example.domain.entity.Task
 import androidx.annotation.VisibleForTesting
 import kotlinx.coroutines.delay
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class InMemoryTaskDataSource @Inject constructor(): TaskDataSource {
+class InMemoryTaskDataSource : TaskDataSource {
     private val SERVICE_LATENCY_IN_MILLIS = 2000L
 
     private var taskData = LinkedHashMap<String, Task>()

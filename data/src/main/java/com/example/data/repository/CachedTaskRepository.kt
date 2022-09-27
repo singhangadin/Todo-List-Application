@@ -10,11 +10,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class CachedTaskRepository @Inject constructor(
+
+class CachedTaskRepository constructor(
     private val tasksLocalDataSource: TaskDataSource,
     private val tasksRemoteDataSource: TaskDataSource,   // MockRemote Source
     private val logService: LogService,

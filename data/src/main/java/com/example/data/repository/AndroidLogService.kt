@@ -2,11 +2,8 @@ package com.example.data.repository
 
 import com.example.domain.contract.LogService
 import android.util.Log
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class AndroidLogService @Inject constructor(): LogService {
+class AndroidLogService : LogService {
     override fun logException(tag: String, throwable: Throwable) {
         Log.e(tag, null, throwable)
     }

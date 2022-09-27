@@ -6,11 +6,9 @@ import com.example.data.datasource.remote.entity.toTask
 import com.example.data.datasource.remote.entity.toTaskRequest
 import com.example.data.datasource.remote.service.TodoService
 import com.example.domain.entity.Task
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class RemoteTaskDataSource @Inject constructor(private val todoService: TodoService):
+
+class RemoteTaskDataSource constructor(private val todoService: TodoService):
     TaskDataSource {
     override suspend fun insertTask(task: Task): Task? {
         return kotlin.runCatching {

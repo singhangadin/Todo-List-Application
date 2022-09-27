@@ -9,11 +9,9 @@ import com.example.domain.exception.DataNotFoundException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class DefaultTaskRepository @Inject constructor(
+
+class DefaultTaskRepository constructor(
     private val taskDataSource: TaskDataSource,
     private val logService: LogService,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO

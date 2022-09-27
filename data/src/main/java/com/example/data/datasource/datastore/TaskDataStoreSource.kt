@@ -9,11 +9,8 @@ import com.example.data.datasource.datastore.entity.Task as DSTask
 import com.example.domain.entity.Task
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class TaskDataStoreSource @Inject constructor(val context: Context): TaskDataSource {
+class TaskDataStoreSource constructor(val context: Context): TaskDataSource {
     override suspend fun insertTask(task: Task): Task {
         val newTask = if (task.taskId == null) {
             task.copy(System.currentTimeMillis().toString())

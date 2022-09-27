@@ -1,35 +1,77 @@
 package com.example.common
 
-import javax.inject.Qualifier
+import org.koin.core.qualifier.Qualifier
+import org.koin.core.qualifier.QualifierValue
 
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class DBDataSource
 
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class InMemoryDataSource
+class DBDataSource : Qualifier {
+    override val value: QualifierValue = "DBDataSource"
 
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class FileDataSource
+    override fun toString(): String {
+        return "q:'$value'"
+    }
+}
 
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class DataStoreDataSource
+class InMemoryDataSource : Qualifier {
+    override val value: QualifierValue = "InMemoryDataSource"
 
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class DefaultRepository
+    override fun toString(): String {
+        return "q:'$value'"
+    }
+}
 
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class CacheRepository
+class FileDataSource : Qualifier {
+    override val value: QualifierValue = "FileDataSource"
 
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class IODispatcher
+    override fun toString(): String {
+        return "q:'$value'"
+    }
+}
 
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class DefaultDispatcher
+class DataStoreDataSource : Qualifier {
+    override val value: QualifierValue = "DataStoreDataSource"
+
+    override fun toString(): String {
+        return "q:'$value'"
+    }
+}
+
+class RemoteDataSource : Qualifier {
+    override val value: QualifierValue = "RemoteDataSource"
+
+    override fun toString(): String {
+        return "q:'$value'"
+    }
+}
+
+class DefaultRepository : Qualifier {
+    override val value: QualifierValue = "DefaultRepository"
+
+    override fun toString(): String {
+        return "q:'$value'"
+    }
+}
+
+class CacheRepository : Qualifier {
+    override val value: QualifierValue = "CacheRepository"
+
+    override fun toString(): String {
+        return "q:'$value'"
+    }
+}
+
+class IODispatcher : Qualifier {
+    override val value: QualifierValue = "IODispatcher"
+
+    override fun toString(): String {
+        return "q:'$value'"
+    }
+}
+
+class DefaultDispatcher : Qualifier {
+    override val value: QualifierValue = "DefaultDispatcher"
+
+    override fun toString(): String {
+        return "q:'$value'"
+    }
+}

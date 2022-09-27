@@ -33,6 +33,7 @@ android {
 }
 
 dependencies {
+    def koin_version= "3.2.1"
     def room_version = "2.4.3"
     def coroutines_version = "1.6.4"
 
@@ -41,9 +42,9 @@ dependencies {
     implementation project(path: ':common')
 
     // Core
-    implementation 'javax.inject:javax.inject:1'
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.5.0'
+    implementation "io.insert-koin:koin-android:$koin_version"
     implementation 'com.google.android.material:material:1.6.1'
 
     // Network
