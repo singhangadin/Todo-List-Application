@@ -1,5 +1,6 @@
 package com.example.todo_list_application
 
+import `in`.singhangad.shared_data.di.sharedDataModule
 import `in`.singhangad.ui_common.di.viewModelModule
 import android.app.Application
 import `in`.singhangad.shared_domain.di.domainModule
@@ -16,8 +17,7 @@ class TodoApplication: Application() {
         startKoin {
             androidLogger()
             androidContext(this@TodoApplication)
-            modules(appModule, dataModule,
-                `in`.singhangad.shared_domain.di.domainModule, viewModelModule)
+            modules(appModule, dataModule, sharedDataModule, domainModule, viewModelModule)
         }
     }
 }

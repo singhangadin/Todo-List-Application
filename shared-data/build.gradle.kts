@@ -34,6 +34,7 @@ kotlin {
             dependencies {
                 implementation(project(mapOf("path" to ":shared-domain")))
                 implementation("com.squareup.sqldelight:runtime:1.5.3")
+                implementation("io.insert-koin:koin-core:3.2.1")
             }
         }
         val commonTest by getting {

@@ -2,6 +2,7 @@ package com.example.todo_list_application.di
 
 import `in`.singhangad.shared_common.DefaultDispatcher
 import `in`.singhangad.shared_common.IODispatcher
+import `in`.singhangad.shared_data.database.DatabaseDriverFactory
 import androidx.room.Room
 import com.example.data.repository.AndroidLogService
 import com.example.data.datasource.db.TodoDatabase
@@ -14,6 +15,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import `in`.singhangad.shared_data.database.TodoDatabase as SharedTodoDatabase
 
 val appModule = module {
     single {
@@ -49,6 +51,14 @@ val appModule = module {
             "todo_database"
         ).build()
     }
+
+    single {
+        val dbDriver = DatabaseDriverFactory(
+            androidContext()
+        ).createDriver()
+        SharedTodoDatabase(dbDriver)
+    }
+
     single(qualifier = IODispatcher()) { Dispatchers.IO }
 
     single(qualifier = DefaultDispatcher()) { Dispatchers.Default }

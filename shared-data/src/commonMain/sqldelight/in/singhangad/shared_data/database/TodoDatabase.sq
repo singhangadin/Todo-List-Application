@@ -2,9 +2,9 @@ CREATE TABLE task_table (
     task_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     task_title TEXT NOT NULL DEFAULT "",
     task_description TEXT,
-    task_pinned INTEGER AS Boolean DEFAULT 0,
-    task_create_time INTEGER,
-    task_end_time INTEGER
+    task_pinned INTEGER AS Boolean NOT NULL DEFAULT 0,
+    task_create_time INTEGER NOT NULL,
+    task_end_time INTEGER NOT NULL
 );
 
 upsertTask:
@@ -15,6 +15,12 @@ insertTask:
 INSERT INTO task_table(task_title, task_description, task_pinned, task_create_time, task_end_time)
 VALUES (?, ?, ?, ?, ?);
 
+selectChanges:
+SELECT changes();
+
+selectLastInsertedRowId:
+SELECT last_insert_rowid();
+
 getAllTasks:
 SELECT * FROM task_table;
 
@@ -24,7 +30,7 @@ SELECT * FROM task_table WHERE task_id = ?;
 pinTask:
 UPDATE task_table SET task_pinned = 1 WHERE task_id = ?;
 
-unpinTask:
+unPinTask:
 UPDATE task_table SET task_pinned = 0 WHERE task_id = ?;
 
 removeTaskWithId:
