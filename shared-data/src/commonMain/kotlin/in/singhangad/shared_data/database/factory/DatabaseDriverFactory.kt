@@ -1,4 +1,4 @@
-package `in`.singhangad.shared_data.database
+package `in`.singhangad.shared_data.database.factory
 
 import com.squareup.sqldelight.db.SqlDriver
 

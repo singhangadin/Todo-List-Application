@@ -1,4 +1,4 @@
-package `in`.singhangad.shared_data.database
+package `in`.singhangad.shared_data.database.dao
 
 import `in`.singhangad.shared_domain.entity.Task
 

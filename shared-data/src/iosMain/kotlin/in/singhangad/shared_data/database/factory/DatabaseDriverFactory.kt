@@ -1,5 +1,6 @@
-package `in`.singhangad.shared_data.database
+package `in`.singhangad.shared_data.database.factory
 
+import `in`.singhangad.shared_data.database.TodoDatabase
 import com.squareup.sqldelight.db.SqlDriver
 import com.squareup.sqldelight.drivers.native.NativeSqliteDriver
 

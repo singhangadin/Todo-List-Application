@@ -2,7 +2,7 @@ package com.example.todo_list_application.di
 
 import `in`.singhangad.shared_common.DefaultDispatcher
 import `in`.singhangad.shared_common.IODispatcher
-import `in`.singhangad.shared_data.database.DatabaseDriverFactory
+import `in`.singhangad.shared_data.database.factory.DatabaseDriverFactory
 import androidx.room.Room
 import com.example.data.repository.AndroidLogService
 import com.example.data.datasource.db.TodoDatabase

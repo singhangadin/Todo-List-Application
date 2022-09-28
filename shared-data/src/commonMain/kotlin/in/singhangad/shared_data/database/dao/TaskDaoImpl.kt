@@ -1,6 +1,6 @@
-package `in`.singhangad.shared_data.database
+package `in`.singhangad.shared_data.database.dao
 
-import `in`.singhangad.shared_data.utils.toDomain
+import `in`.singhangad.shared_data.utils.toDomainTask
 import `in`.singhangad.shared_domain.entity.Task
 import `in`.singhangad.shareddata.database.TodoDatabaseQueries
 
@@ -33,7 +33,7 @@ class TaskDaoImpl(private val todoQueries: TodoDatabaseQueries): TaskDao {
     }
 
     override suspend fun getTaskWithId(id: Long): Task {
-        return todoQueries.getTaskWithId(id).executeAsOne().toDomain()
+        return todoQueries.getTaskWithId(id).executeAsOne().toDomainTask()
     }
 
     override suspend fun removeTaskWithId(id: Long) {
@@ -50,7 +50,7 @@ class TaskDaoImpl(private val todoQueries: TodoDatabaseQueries): TaskDao {
 
     override suspend fun getAllTasks(): List<Task> {
         return todoQueries.getAllTasks().executeAsList().map {
-            it.toDomain()
+            it.toDomainTask()
         }
     }
 
