@@ -4,7 +4,7 @@ import `in`.singhangad.shared_common.DefaultDispatcher
 import `in`.singhangad.shared_common.IODispatcher
 import `in`.singhangad.shared_data.datasource.database.factory.DatabaseDriverFactory
 import `in`.singhangad.shared_domain.contract.LogService
-import com.example.todo_list_application.service.AndroidLogService
+import `in`.singhangad.shared_data.service.CommonLogService
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
@@ -61,5 +61,5 @@ val appModule = module {
 
     single(qualifier = DefaultDispatcher()) { Dispatchers.Default }
 
-    single<LogService> { AndroidLogService() }
+    single<LogService> { CommonLogService() }
 }
