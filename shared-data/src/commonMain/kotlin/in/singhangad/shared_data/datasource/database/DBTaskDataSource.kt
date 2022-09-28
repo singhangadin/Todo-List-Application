@@ -1,6 +1,6 @@
 package `in`.singhangad.shared_data.datasource.database
 
-import `in`.singhangad.shared_data.base.TaskDataSource
+import `in`.singhangad.shared_data.datasource.base.TaskDataSource
 import `in`.singhangad.shared_data.datasource.database.dao.TaskDao
 import `in`.singhangad.shared_domain.entity.Task
 

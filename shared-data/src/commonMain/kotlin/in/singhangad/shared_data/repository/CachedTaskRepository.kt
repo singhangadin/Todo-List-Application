@@ -1,6 +1,6 @@
 package `in`.singhangad.shared_data.repository
 
-import `in`.singhangad.shared_data.base.TaskDataSource
+import `in`.singhangad.shared_data.datasource.base.TaskDataSource
 import `in`.singhangad.shared_domain.contract.LogService
 import `in`.singhangad.shared_domain.contract.TaskRepositoryContract
 import `in`.singhangad.shared_domain.entity.Task

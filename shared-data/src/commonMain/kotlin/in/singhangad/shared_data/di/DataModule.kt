@@ -1,7 +1,7 @@
 package `in`.singhangad.shared_data.di
 
 import `in`.singhangad.shared_common.*
-import `in`.singhangad.shared_data.base.TaskDataSource
+import `in`.singhangad.shared_data.datasource.base.TaskDataSource
 import `in`.singhangad.shared_data.datasource.database.DBTaskDataSource
 import `in`.singhangad.shared_data.datasource.database.dao.TaskDao
 import `in`.singhangad.shared_data.datasource.database.dao.TaskDaoImpl

@@ -1,29 +1,26 @@
-package `in`.singhangad.shared_data.datasource.inmemory
+package `in`.singhangad.shared_data.datasource.remote
 
 import `in`.singhangad.shared_data.datasource.base.TaskDataSource
+import `in`.singhangad.shared_data.datasource.remote.entity.TaskRequest
+import `in`.singhangad.shared_data.datasource.remote.entity.toTask
+import `in`.singhangad.shared_data.datasource.remote.entity.toTaskRequest
+import `in`.singhangad.shared_data.datasource.remote.service.TodoService
 import `in`.singhangad.shared_domain.entity.Task
-import kotlinx.datetime.Clock
 
-class InMemoryTaskDataSource : TaskDataSource {
-    private var taskData = LinkedHashMap<String, Task>()
 
+class RemoteTaskDataSource constructor(private val todoService: TodoService):
+    TaskDataSource {
     override suspend fun insertTask(task: Task): Task? {
         return kotlin.runCatching {
-            val newTask = if (task.taskId == null) {
-                task.copy(Clock.System.now().toEpochMilliseconds().toString())
-            } else {
-                task
-            }
-            taskData[newTask.taskId!!] = newTask
-            newTask
+            todoService.addTask(task.toTaskRequest())
         }.onFailure {
             throw it
-        }.getOrNull()
+        }.getOrNull()?.toTask()
     }
 
     override suspend fun deleteTask(task: Task) {
         kotlin.runCatching {
-            taskData.remove(task.taskId!!)
+            todoService.deleteTask(task.taskId!!)
         }.onFailure {
             throw it
         }
@@ -31,16 +28,15 @@ class InMemoryTaskDataSource : TaskDataSource {
 
     override suspend fun updateTask(task: Task): Task? {
         return kotlin.runCatching {
-            taskData[task.taskId!!] = task
-            task
+            todoService.updateTask(task.taskId!!, task.toTaskRequest())
         }.onFailure {
             throw it
-        }.getOrNull()
+        }.getOrNull()?.toTask()
     }
 
-    override suspend fun getTaskWithId(id: String): Task? {
+    override suspend fun getTaskWithId(id: String): Task {
         try {
-            return taskData[id]
+            return todoService.getTaskWithId(id).toTask()
         } catch (exception: Exception) {
             throw exception
         }
@@ -48,7 +44,7 @@ class InMemoryTaskDataSource : TaskDataSource {
 
     override suspend fun removeTaskWithId(id: String) {
         try {
-            taskData.remove(id)
+            return todoService.removeTaskWithId(id)
         } catch (exception: Exception) {
             throw exception
         }
@@ -56,8 +52,7 @@ class InMemoryTaskDataSource : TaskDataSource {
 
     override suspend fun pinTask(id: String) {
         try {
-            taskData[id] = taskData[id]?.copy(isPinned = true)!!
-            taskData[id]
+            todoService.pinTask(id, TaskRequest(completed = true))
         } catch (exception: Exception) {
             throw exception
         }
@@ -65,8 +60,7 @@ class InMemoryTaskDataSource : TaskDataSource {
 
     override suspend fun unPinTask(id: String) {
         try {
-            taskData[id] = taskData[id]?.copy(isPinned = false)!!
-            taskData[id]
+            todoService.pinTask(id, TaskRequest(completed = false))
         } catch (exception: Exception) {
             throw exception
         }
@@ -74,17 +68,15 @@ class InMemoryTaskDataSource : TaskDataSource {
 
     override suspend fun getAllTasks(): List<Task> {
         try {
-            return taskData.values.toList()
+            return todoService.getAllTasks().data.map {
+                it.toTask()
+            }
         } catch (exception: Exception) {
             throw exception
         }
     }
 
     override suspend fun deleteAllTasks() {
-        taskData.clear()
-    }
 
-    fun clear() {
-        taskData.clear()
     }
 }

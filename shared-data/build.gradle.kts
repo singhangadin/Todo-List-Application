@@ -30,6 +30,7 @@ kotlin {
     }
     
     sourceSets {
+        val serializationVersion = "1.2.2"
         val commonMain by getting {
             dependencies {
                 implementation(project(mapOf("path" to ":shared-common")))
@@ -38,6 +39,7 @@ kotlin {
                 implementation("com.squareup.sqldelight:runtime:1.5.3")
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$serializationVersion")
             }
         }
         val commonTest by getting {
