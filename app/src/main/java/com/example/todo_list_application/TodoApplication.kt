@@ -17,7 +17,7 @@ class TodoApplication: Application() {
         startKoin {
             androidLogger()
             androidContext(this@TodoApplication)
-            modules(appModule, dataModule, sharedDataModule, domainModule, viewModelModule)
+            modules(appModule, sharedDataModule, domainModule, viewModelModule)
         }
     }
 }

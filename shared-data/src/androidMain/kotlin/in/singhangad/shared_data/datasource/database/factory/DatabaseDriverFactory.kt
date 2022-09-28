@@ -1,4 +1,4 @@
-package `in`.singhangad.shared_data.database.factory
+package `in`.singhangad.shared_data.datasource.database.factory
 
 import `in`.singhangad.shared_data.database.TodoDatabase
 import android.content.Context

@@ -1,7 +1,7 @@
-package `in`.singhangad.shared_data.database
+package `in`.singhangad.shared_data.datasource.database
 
 import `in`.singhangad.shared_data.base.TaskDataSource
-import `in`.singhangad.shared_data.database.dao.TaskDao
+import `in`.singhangad.shared_data.datasource.database.dao.TaskDao
 import `in`.singhangad.shared_domain.entity.Task
 
 class DBTaskDataSource constructor(private val taskDao: TaskDao): TaskDataSource {

@@ -32,10 +32,12 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation(project(mapOf("path" to ":shared-common")))
                 implementation(project(mapOf("path" to ":shared-domain")))
                 implementation("io.insert-koin:koin-core:3.2.1")
                 implementation("com.squareup.sqldelight:runtime:1.5.3")
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
             }
         }
         val commonTest by getting {

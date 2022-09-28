@@ -1,4 +1,4 @@
-package `in`.singhangad.shared_data.inmemory
+package `in`.singhangad.shared_data.datasource.inmemory
 
 import `in`.singhangad.shared_data.base.TaskDataSource
 import `in`.singhangad.shared_domain.entity.Task
