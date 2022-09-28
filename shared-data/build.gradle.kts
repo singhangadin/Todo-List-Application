@@ -1,7 +1,16 @@
 plugins {
     kotlin("multiplatform")
     kotlin("native.cocoapods")
+    kotlin("plugin.serialization")
+
     id("com.android.library")
+    id("com.squareup.sqldelight")
+}
+
+sqldelight {
+    database("TodoDatabase") {
+        packageName = "in.singhangad.shared_data.database"
+    }
 }
 
 kotlin {
@@ -24,6 +33,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(mapOf("path" to ":shared-domain")))
+                implementation("com.squareup.sqldelight:runtime:1.5.3")
             }
         }
         val commonTest by getting {
@@ -31,8 +41,15 @@ kotlin {
                 implementation(kotlin("test"))
             }
         }
-        val androidMain by getting
-        val androidTest by getting
+        val androidMain by getting {
+            dependsOn(commonMain)
+            dependencies {
+                implementation("com.squareup.sqldelight:android-driver:1.5.3")
+            }
+        }
+        val androidTest by getting {
+            dependsOn(commonTest)
+        }
         val iosX64Main by getting
         val iosArm64Main by getting
         val iosSimulatorArm64Main by getting
@@ -41,6 +58,9 @@ kotlin {
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
+            dependencies {
+                implementation("com.squareup.sqldelight:native-driver:1.5.3")
+            }
         }
         val iosX64Test by getting
         val iosArm64Test by getting
