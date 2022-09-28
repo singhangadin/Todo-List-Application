@@ -68,7 +68,6 @@ dependencies {
     def lifecycle_version = "2.5.1"
 
     // Local Modules
-    implementation project(path: ':data')
     implementation project(path: ':shared-data')
     implementation project(path: ':shared-domain')
     implementation project(path: ':shared-common')

@@ -5,7 +5,6 @@ import `in`.singhangad.ui_common.di.viewModelModule
 import android.app.Application
 import `in`.singhangad.shared_domain.di.domainModule
 import com.example.todo_list_application.di.appModule
-import com.example.data.di.dataModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.GlobalContext.startKoin

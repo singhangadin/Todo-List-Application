@@ -3,10 +3,8 @@ package com.example.todo_list_application.di
 import `in`.singhangad.shared_common.DefaultDispatcher
 import `in`.singhangad.shared_common.IODispatcher
 import `in`.singhangad.shared_data.datasource.database.factory.DatabaseDriverFactory
-import androidx.room.Room
-import com.example.data.repository.AndroidLogService
-import com.example.data.datasource.db.TodoDatabase
-import com.example.data.datasource.remote.service.TodoService
+import `in`.singhangad.shared_domain.contract.LogService
+import com.example.todo_list_application.service.AndroidLogService
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
@@ -40,17 +38,17 @@ val appModule = module {
         .build()
     }
 
-    single<TodoService> {
-        get<Retrofit>().create(TodoService::class.java)
-    }
+//    single<TodoService> {
+//        get<Retrofit>().create(TodoService::class.java)
+//    }
 
-    single {
-        Room.databaseBuilder(
-            androidContext(),
-            TodoDatabase::class.java,
-            "todo_database"
-        ).build()
-    }
+//    single {
+//        Room.databaseBuilder(
+//            androidContext(),
+//            TodoDatabase::class.java,
+//            "todo_database"
+//        ).build()
+//    }
 
     single {
         val dbDriver = DatabaseDriverFactory(
@@ -63,5 +61,5 @@ val appModule = module {
 
     single(qualifier = DefaultDispatcher()) { Dispatchers.Default }
 
-    single<`in`.singhangad.shared_domain.contract.LogService> { AndroidLogService() }
+    single<LogService> { AndroidLogService() }
 }
