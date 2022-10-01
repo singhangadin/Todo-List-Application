@@ -38,18 +38,6 @@ val appModule = module {
         .build()
     }
 
-//    single<TodoService> {
-//        get<Retrofit>().create(TodoService::class.java)
-//    }
-
-//    single {
-//        Room.databaseBuilder(
-//            androidContext(),
-//            TodoDatabase::class.java,
-//            "todo_database"
-//        ).build()
-//    }
-
     single {
         val dbDriver = DatabaseDriverFactory(
             androidContext()
