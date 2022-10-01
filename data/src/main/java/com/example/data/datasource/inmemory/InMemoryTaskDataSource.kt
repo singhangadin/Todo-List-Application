@@ -1,7 +1,7 @@
 package com.example.data.datasource.inmemory
 
+import `in`.singhangad.shared_domain.entity.Task
 import com.example.data.datasource.base.TaskDataSource
-import com.example.domain.entity.Task
 import androidx.annotation.VisibleForTesting
 import kotlinx.coroutines.delay
 

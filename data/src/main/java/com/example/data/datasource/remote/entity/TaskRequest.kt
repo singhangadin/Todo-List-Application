@@ -1,6 +1,6 @@
 package com.example.data.datasource.remote.entity
 
-import com.example.domain.entity.Task
+import `in`.singhangad.shared_domain.entity.Task
 import com.google.gson.annotations.SerializedName
 
 data class TaskRequest (

@@ -63,14 +63,14 @@ android {
 
 dependencies {
     def koin_version= "3.2.1"
-    def nav_version = "2.5.1"
+    def nav_version = "2.5.2"
     def room_version = "2.4.3"
     def lifecycle_version = "2.5.1"
 
     // Local Modules
-    implementation project(path: ':data')
-    implementation project(path: ':domain')
-    implementation project(path: ':common')
+    implementation project(path: ':shared-data')
+    implementation project(path: ':shared-domain')
+    implementation project(path: ':shared-common')
 
     implementation project(path: ':ui-common')
     xmlUIImplementation project(path: ':ui-xml')
@@ -78,8 +78,8 @@ dependencies {
     implementation 'androidx.activity:activity-compose:1.5.1'
 
     // Core
-    implementation 'androidx.core:core-ktx:1.8.0'
-    implementation 'androidx.appcompat:appcompat:1.5.0'
+    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation "androidx.fragment:fragment-ktx:1.5.2"
     implementation 'com.google.android.material:material:1.6.1'
 

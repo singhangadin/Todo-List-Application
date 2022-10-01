@@ -34,24 +34,24 @@ val Context.taskListDataStore: DataStore<TaskList> by dataStore(
     serializer = TaskListSerializer
 )
 
-fun com.example.domain.entity.Task.fromDomainTask(): Task {
+fun `in`.singhangad.shared_domain.entity.Task.fromDomainTask(): Task {
     return Task.newBuilder()
         .setTaskId(this.taskId?.toLong()?:0)
         .setTaskTitle(this.taskTitle)
         .setTaskDescription(this.taskDescription)
-        .setCreatedAt(this.createdAt.time)
-        .setEndDate(this.createdAt.time)
+        .setCreatedAt(this.createdAt)
+        .setEndDate(this.createdAt)
         .setIsPinned(this.isPinned)
         .build()
 }
 
-fun Task.toDomainTask(): com.example.domain.entity.Task {
-    return com.example.domain.entity.Task(
+fun Task.toDomainTask(): `in`.singhangad.shared_domain.entity.Task {
+    return `in`.singhangad.shared_domain.entity.Task(
         this.taskId.toString(),
         this.taskTitle,
         this.taskDescription,
         this.isPinned,
-        Date(this.createdAt),
-        Date(this.endDate)
+        this.createdAt,
+        this.endDate
     )
 }

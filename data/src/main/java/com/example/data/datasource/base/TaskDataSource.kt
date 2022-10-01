@@ -1,6 +1,7 @@
 package com.example.data.datasource.base
 
-import com.example.domain.entity.Task
+import `in`.singhangad.shared_domain.entity.Task
+
 
 interface TaskDataSource {
     suspend fun insertTask(task: Task): Task?

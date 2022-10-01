@@ -2,10 +2,10 @@ package com.example.data.repository
 
 
 import com.example.data.datasource.base.TaskDataSource
-import com.example.domain.contract.LogService
-import com.example.domain.contract.TaskRepositoryContract
-import com.example.domain.entity.Task
-import com.example.domain.exception.DataNotFoundException
+import `in`.singhangad.shared_domain.contract.LogService
+import `in`.singhangad.shared_domain.contract.TaskRepositoryContract
+import `in`.singhangad.shared_domain.entity.Task
+import `in`.singhangad.shared_domain.exception.DataNotFoundException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

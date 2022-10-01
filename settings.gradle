@@ -14,9 +14,9 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Todo-List-Application"
 include ':app'
-include ':data'
 include ':ui-xml'
-include ':domain'
-include ':common'
 include ':ui-compose'
 include ':ui-common'
+include ':shared-data'
+include ':shared-domain'
+include ':shared-common'

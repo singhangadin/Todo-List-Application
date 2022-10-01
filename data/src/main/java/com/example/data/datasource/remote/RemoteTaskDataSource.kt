@@ -1,11 +1,11 @@
 package com.example.data.datasource.remote
 
+import `in`.singhangad.shared_domain.entity.Task
 import com.example.data.datasource.base.TaskDataSource
 import com.example.data.datasource.remote.entity.TaskRequest
 import com.example.data.datasource.remote.entity.toTask
 import com.example.data.datasource.remote.entity.toTaskRequest
 import com.example.data.datasource.remote.service.TodoService
-import com.example.domain.entity.Task
 
 
 class RemoteTaskDataSource constructor(private val todoService: TodoService):

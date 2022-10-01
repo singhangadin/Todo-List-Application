@@ -29,20 +29,20 @@ data class Task (
     val endDate: Date
 )
 
-fun com.example.domain.entity.Task.fromDomainTask(): Task = Task(
+fun `in`.singhangad.shared_domain.entity.Task.fromDomainTask(): Task = Task(
     this.taskId?.toLong(),
     this.taskTitle,
     this.taskDescription,
     this.isPinned,
-    this.createdAt,
-    this.endDate
+    Date(this.createdAt),
+    Date(this.endDate)
 )
 
-fun Task.toDomainTask(): com.example.domain.entity.Task = com.example.domain.entity.Task(
+fun Task.toDomainTask(): `in`.singhangad.shared_domain.entity.Task = `in`.singhangad.shared_domain.entity.Task(
     this.taskId.toString(),
     this.taskTitle,
     this.taskDescription,
     this.isPinned,
-    this.createdAt,
-    this.endDate
+    this.createdAt.time,
+    this.endDate.time
 )
