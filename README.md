@@ -1,16 +1,17 @@
-# Todo-List-Application
+# Todo-List-Application (Boring Todo)
 Just another TODO Application
+
 Feature Roadmap:
 1. CRUD entries (Of course)
-2. Local (DB, File) and Remote Data sources storage
-3. Kotlin everywhere
-4. Room Database
-5. Proto DataStore
-6. Koin
-7. Architecture = Clean + MVVM
-8. Navigation component
-9. Unit, Functional, End to end testing
-10. Separate Compose and XML UI layers
+2. Kotlin everywhere
+3. SqlDelight Database
+4. Koin
+5. Architecture = Clean + MVVM
+6. Navigation component
+7. Unit, Functional, End to end testing
+8. Separate Compose and XML UI layers
+9. Multiplatform
 
 TODO:
 1. Dark/Light Theme for Compose UI
+2. Remote Data sources
