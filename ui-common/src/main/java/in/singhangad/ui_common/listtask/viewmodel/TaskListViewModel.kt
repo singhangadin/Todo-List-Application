@@ -38,7 +38,7 @@ class TaskListViewModel constructor(
 
     private fun getHeaderItemType(key: Boolean): TaskListItem {
         return TaskListItem(
-            if (key) "true" else "false",
+            if (key) 1 else 0,
             ItemType.HEADER,
             if (key) "Pinned" else "Tasks",
             null, key
@@ -98,13 +98,13 @@ class TaskListViewModel constructor(
         }
     }
 
-    fun updateTask(taskId: String) {
+    fun updateTask(taskId: Long) {
         viewModelScope.launch(dispatcher) {
             _uiState.emit(TaskListUIState.ShowSaveTaskScreen(taskId))
         }
     }
 
-    fun deleteTask(taskId: String) {
+    fun deleteTask(taskId: Long) {
         viewModelScope.launch(dispatcher) {
             kotlin.runCatching {
                 _uiState.emit(TaskListUIState.ShowLoader)
@@ -125,7 +125,7 @@ class TaskListViewModel constructor(
         }
     }
 
-    fun pinItem(taskId: String) {
+    fun pinItem(taskId: Long) {
         viewModelScope.launch(dispatcher) {
             kotlin.runCatching {
                 _uiState.emit(TaskListUIState.ShowLoader)
@@ -146,7 +146,7 @@ class TaskListViewModel constructor(
         }
     }
 
-    fun unPinItem(taskId: String) {
+    fun unPinItem(taskId: Long) {
         viewModelScope.launch(dispatcher) {
             kotlin.runCatching {
                 _uiState.emit(TaskListUIState.ShowLoader)

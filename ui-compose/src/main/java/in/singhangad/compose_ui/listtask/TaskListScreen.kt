@@ -34,7 +34,7 @@ import androidx.constraintlayout.compose.Dimension
 import kotlinx.coroutines.flow.onSubscription
 
 @Composable
-fun TaskListScreen(viewModel: TaskListViewModel, navigateSave: (String?) -> Unit) {
+fun TaskListScreen(viewModel: TaskListViewModel, navigateSave: (Long?) -> Unit) {
     val scaffoldState: ScaffoldState = rememberScaffoldState()
     val uiState = viewModel.uiState.onSubscription {
         viewModel.loadData(true)
@@ -142,7 +142,7 @@ fun EmptyView() {
 }
 
 @Composable
-fun ActionMenu(expanded: MutableState<Boolean>, task: TaskListItem, menuItemClick: (Int, String) -> Unit){
+fun ActionMenu(expanded: MutableState<Boolean>, task: TaskListItem, menuItemClick: (Int, Long) -> Unit){
     DropdownMenu(
         expanded = expanded.value,
         onDismissRequest = { expanded.value = false }
@@ -167,7 +167,7 @@ fun ActionMenu(expanded: MutableState<Boolean>, task: TaskListItem, menuItemClic
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun TaskList(data: List<TaskListItem>, menuItemClick: (Int, String) -> Unit, onItemClick: (String) -> Unit) {
+fun TaskList(data: List<TaskListItem>, menuItemClick: (Int, Long) -> Unit, onItemClick: (Long) -> Unit) {
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
@@ -200,7 +200,7 @@ fun TaskList(data: List<TaskListItem>, menuItemClick: (Int, String) -> Unit, onI
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun TaskItem(taskListItem: TaskListItem, menuItemClick: (Int, String) -> Unit, onClick: (String) -> Unit) {
+fun TaskItem(taskListItem: TaskListItem, menuItemClick: (Int, Long) -> Unit, onClick: (Long) -> Unit) {
     val expanded = remember {
         mutableStateOf(false)
     }
@@ -295,7 +295,7 @@ fun EmptyViewPreview() {
 @Composable
 fun TaskListItemPreview() {
     TaskItem(TaskListItem(
-        "itemId",
+        1,
         ItemType.TASK_ITEM,
         "Title",
         "Description",
@@ -307,7 +307,7 @@ fun TaskListItemPreview() {
 @Composable
 fun TaskHeaderItemPreview() {
     TaskHeaderItem(TaskListItem(
-        "itemId",
+        1,
         ItemType.TASK_ITEM,
         "Title",
         "Description",

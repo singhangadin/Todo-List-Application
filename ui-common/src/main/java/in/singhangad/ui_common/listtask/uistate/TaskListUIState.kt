@@ -9,5 +9,5 @@ sealed class TaskListUIState {
     object HideEmptyView: TaskListUIState()
 
     class ShowMessage(val message: Int): TaskListUIState()
-    class ShowSaveTaskScreen(val taskId: String?): TaskListUIState()
+    class ShowSaveTaskScreen(val taskId: Long?): TaskListUIState()
 }

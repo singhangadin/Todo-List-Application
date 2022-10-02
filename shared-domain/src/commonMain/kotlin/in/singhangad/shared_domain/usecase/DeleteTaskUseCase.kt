@@ -8,6 +8,6 @@ class DeleteTaskUseCase constructor(private val taskRepositoryContract: TaskRepo
     }
 
     data class UseCaseParams(
-        val id: String
+        val id: Long
     )
 }

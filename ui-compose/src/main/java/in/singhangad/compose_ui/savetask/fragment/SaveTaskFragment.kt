@@ -25,7 +25,7 @@ class SaveTaskFragment: Fragment() {
                 val taskId = arguments?.run {
                     SaveTaskFragmentArgs.fromBundle(this).taskId
                 }
-                SaveTaskScreen(viewModel = viewModel, taskId) {
+                SaveTaskScreen(viewModel = viewModel, taskId?:-1) {
                     activity?.onBackPressed()
                 }
             }

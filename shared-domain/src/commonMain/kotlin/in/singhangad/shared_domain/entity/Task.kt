@@ -2,7 +2,7 @@ package `in`.singhangad.shared_domain.entity
 
 
 data class Task (
-    val taskId: String ?= null,
+    val taskId: Long ?= null,
     val taskTitle: String = "",
     val taskDescription: String? = null,
     val isPinned: Boolean = false,

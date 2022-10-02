@@ -7,6 +7,11 @@ import `in`.singhangad.shared_data.datasource.database.dao.TaskDao
 import `in`.singhangad.shared_data.datasource.database.dao.TaskDaoImpl
 import `in`.singhangad.shared_data.database.TodoDatabase
 import `in`.singhangad.shared_data.datasource.inmemory.InMemoryTaskDataSource
+import `in`.singhangad.shared_data.datasource.remote.RemoteTaskDataSource
+import `in`.singhangad.shared_data.datasource.remote.httpClient
+import `in`.singhangad.shared_data.datasource.remote.json
+import `in`.singhangad.shared_data.datasource.remote.service.TodoService
+import `in`.singhangad.shared_data.datasource.remote.service.TodoServiceImpl
 import `in`.singhangad.shared_data.repository.CachedTaskRepository
 import `in`.singhangad.shared_data.repository.DefaultTaskRepository
 import `in`.singhangad.shared_domain.contract.TaskRepositoryContract
@@ -18,15 +23,21 @@ val sharedDataModule = module {
 
     single<TaskDao> { TaskDaoImpl(get()) }
 
+    single { json }
+
+    single { httpClient }
+
+    single<TodoService> { TodoServiceImpl(get(), get()) }
+
     single<TaskDataSource>(qualifier = DBDataSource()) { DBTaskDataSource(get()) }
 
-    single<TaskDataSource>(qualifier = InMemoryDataSource()) {
-        InMemoryTaskDataSource()
-    }
+    single<TaskDataSource>(qualifier = InMemoryDataSource()) { InMemoryTaskDataSource() }
+
+    single<TaskDataSource>(qualifier = RemoteDataSource()) { RemoteTaskDataSource(get()) }
 
     single<TaskRepositoryContract>(qualifier = DefaultRepository()) {
         DefaultTaskRepository(
-            taskDataSource = get(qualifier = DBDataSource()),
+            taskDataSource = get(qualifier = RemoteDataSource()),
             logService = get(),
             ioDispatcher = get(qualifier = IODispatcher())
         )
@@ -40,5 +51,4 @@ val sharedDataModule = module {
             ioDispatcher = get(qualifier = IODispatcher())
         )
     }
-
 }

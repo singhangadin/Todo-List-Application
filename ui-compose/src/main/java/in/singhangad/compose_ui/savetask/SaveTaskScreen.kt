@@ -36,7 +36,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 @Composable
-fun SaveTaskScreen(viewModel: SaveTaskViewModel, taskId: String?, onBackPress: () -> Unit) {
+fun SaveTaskScreen(viewModel: SaveTaskViewModel, taskId: Long, onBackPress: () -> Unit) {
     val mDatePickerDialog = DatePickerDialogFactory.create(LocalContext.current) { year, month, day ->
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.YEAR, year)

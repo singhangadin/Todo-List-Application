@@ -30,15 +30,22 @@ kotlin {
     }
     
     sourceSets {
+        val ktorVersion = "2.1.2"
         val napierVersion = "2.6.1"
         val serializationVersion = "1.2.2"
+
         val commonMain by getting {
             dependencies {
                 implementation(project(mapOf("path" to ":shared-common")))
                 implementation(project(mapOf("path" to ":shared-domain")))
-                implementation("io.github.aakira:napier:$napierVersion")
                 implementation("io.insert-koin:koin-core:3.2.1")
+                implementation("io.github.aakira:napier:$napierVersion")
+                implementation("io.ktor:ktor-client-core:$ktorVersion")
                 implementation("com.squareup.sqldelight:runtime:1.5.3")
+                implementation("io.ktor:ktor-client-auth:$ktorVersion")
+                implementation("io.ktor:ktor-client-logging:$ktorVersion")
+                implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$serializationVersion")
@@ -52,6 +59,7 @@ kotlin {
         val androidMain by getting {
             dependsOn(commonMain)
             dependencies {
+                implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
                 implementation("com.squareup.sqldelight:android-driver:1.5.3")
             }
         }
@@ -67,6 +75,7 @@ kotlin {
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
             dependencies {
+                implementation("io.ktor:ktor-client-darwin:$ktorVersion")
                 implementation("com.squareup.sqldelight:native-driver:1.5.3")
             }
         }

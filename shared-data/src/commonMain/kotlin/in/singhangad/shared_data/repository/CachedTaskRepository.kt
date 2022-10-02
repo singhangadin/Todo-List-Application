@@ -17,7 +17,7 @@ class CachedTaskRepository constructor(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.Default
 ): TaskRepositoryContract {
 
-    private var cachedTasks: HashMap<String, Task>? = null
+    private var cachedTasks: HashMap<Long, Task>? = null
 
     override suspend fun getTasks(forceUpdate: Boolean): Result<List<Task>> = withContext(ioDispatcher) {
         if (forceUpdate) {
@@ -40,7 +40,7 @@ class CachedTaskRepository constructor(
         return@withContext Result.failure(IllegalStateException())
     }
 
-    override suspend fun getTaskById(taskId: String): Result<Task> = withContext(ioDispatcher) {
+    override suspend fun getTaskById(taskId: Long): Result<Task> = withContext(ioDispatcher) {
         return@withContext kotlin.runCatching {
             if (cachedTasks?.get(taskId)!= null) {
                 cachedTasks?.get(taskId)!!
@@ -70,7 +70,7 @@ class CachedTaskRepository constructor(
         }
     }
 
-    override suspend fun deleteTask(taskId: String): Result<Unit> = withContext(ioDispatcher){
+    override suspend fun deleteTask(taskId: Long): Result<Unit> = withContext(ioDispatcher){
         return@withContext kotlin.runCatching {
             val task = tasksRemoteDataSource.getTaskWithId(taskId)
             if (task != null) {
@@ -88,7 +88,7 @@ class CachedTaskRepository constructor(
         }
     }
 
-    override suspend fun updateTask(taskId: String, task: Task): Result<Task?> = withContext(ioDispatcher) {
+    override suspend fun updateTask(taskId: Long, task: Task): Result<Task?> = withContext(ioDispatcher) {
         return@withContext kotlin.runCatching {
             val savedTask = tasksRemoteDataSource.getTaskWithId(taskId)
             if (savedTask != null) {
@@ -106,7 +106,7 @@ class CachedTaskRepository constructor(
         }
     }
 
-    override suspend fun pinTask(taskId: String): Result<Unit> = withContext(ioDispatcher) {
+    override suspend fun pinTask(taskId: Long): Result<Unit> = withContext(ioDispatcher) {
         return@withContext kotlin.runCatching {
             val savedTask = tasksRemoteDataSource.getTaskWithId(taskId)
             if (savedTask != null) {
@@ -125,7 +125,7 @@ class CachedTaskRepository constructor(
         }
     }
 
-    override suspend fun unPinTask(taskId: String): Result<Unit> = withContext(ioDispatcher) {
+    override suspend fun unPinTask(taskId: Long): Result<Unit> = withContext(ioDispatcher) {
         return@withContext kotlin.runCatching {
             val savedTask = tasksRemoteDataSource.getTaskWithId(taskId)
             if (savedTask != null) {

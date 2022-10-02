@@ -27,7 +27,7 @@ class DefaultTaskRepository constructor(
         }
     }
 
-    override suspend fun getTaskById(taskId: String): Result<Task> = withContext(ioDispatcher) {
+    override suspend fun getTaskById(taskId: Long): Result<Task> = withContext(ioDispatcher) {
         return@withContext kotlin.runCatching {
             val task = taskDataSource.getTaskWithId(taskId)
             task ?: throw DataNotFoundException()
@@ -50,7 +50,7 @@ class DefaultTaskRepository constructor(
         }
     }
 
-    override suspend fun deleteTask(taskId: String): Result<Unit> = withContext(ioDispatcher) {
+    override suspend fun deleteTask(taskId: Long): Result<Unit> = withContext(ioDispatcher) {
         return@withContext kotlin.runCatching {
             val task = taskDataSource.getTaskWithId(taskId)
             if (task != null) {
@@ -66,7 +66,7 @@ class DefaultTaskRepository constructor(
         }
     }
 
-    override suspend fun updateTask(taskId: String, task: Task): Result<Task?> = withContext(ioDispatcher) {
+    override suspend fun updateTask(taskId: Long, task: Task): Result<Task?> = withContext(ioDispatcher) {
         return@withContext kotlin.runCatching {
             val savedTask = taskDataSource.getTaskWithId(taskId)
             if (savedTask != null) {
@@ -82,7 +82,7 @@ class DefaultTaskRepository constructor(
         }
     }
 
-    override suspend fun pinTask(taskId: String): Result<Unit> = withContext(ioDispatcher) {
+    override suspend fun pinTask(taskId: Long): Result<Unit> = withContext(ioDispatcher) {
         return@withContext kotlin.runCatching {
             val savedTask = taskDataSource.getTaskWithId(taskId)
             if (savedTask != null) {
@@ -98,7 +98,7 @@ class DefaultTaskRepository constructor(
         }
     }
 
-    override suspend fun unPinTask(taskId: String): Result<Unit> = withContext(ioDispatcher) {
+    override suspend fun unPinTask(taskId: Long): Result<Unit> = withContext(ioDispatcher) {
         return@withContext kotlin.runCatching {
             val savedTask = taskDataSource.getTaskWithId(taskId)
             if (savedTask != null) {

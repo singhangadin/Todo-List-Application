@@ -35,8 +35,8 @@ class TaskListFragment: Fragment() {
         setDisplayHomeAsUpEnabled(false)
     }
 
-    private fun navigateToSaveTaskScreen(taskId: String?) {
-        val action = TaskListFragmentDirections.actionTaskListFragmentToSaveTaskFragment(taskId)
+    private fun navigateToSaveTaskScreen(taskId: Long?) {
+        val action = TaskListFragmentDirections.actionTaskListFragmentToSaveTaskFragment(taskId?:-1)
         findNavController().navigate(action)
     }
 }

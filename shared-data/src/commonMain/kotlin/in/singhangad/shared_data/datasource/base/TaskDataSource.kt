@@ -10,13 +10,13 @@ interface TaskDataSource {
 
     suspend fun updateTask(task: Task): Task?
 
-    suspend fun getTaskWithId(id: String): Task?
+    suspend fun getTaskWithId(id: Long): Task?
 
-    suspend fun removeTaskWithId(id: String)
+    suspend fun removeTaskWithId(id: Long)
 
-    suspend fun pinTask(id: String)
+    suspend fun pinTask(id: Long)
 
-    suspend fun unPinTask(id: String)
+    suspend fun unPinTask(id: Long)
 
     suspend fun getAllTasks(): List<Task>
 
