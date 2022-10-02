@@ -8,6 +8,6 @@ class UnPinTaskUseCase constructor(private val taskRepositoryContract: TaskRepos
     }
 
     data class UseCaseParams(
-        val id: String
+        val id: Long
     )
 }

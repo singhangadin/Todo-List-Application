@@ -5,7 +5,7 @@ import `in`.singhangad.shareddata.database.Task_table
 
 fun Task_table.toDomainTask(): Task {
     return Task(
-        this.task_id.toString(),
+        this.task_id,
         this.task_title,
         this.task_description,
         this.task_pinned,

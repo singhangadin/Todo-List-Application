@@ -1,7 +1,7 @@
 package `in`.singhangad.ui_common.listtask.entity
 
 data class TaskListItem(
-    val itemId: String,
+    val itemId: Long,
     val itemType: ItemType,
     val itemTitle: String,
     val itemDescription: String?,

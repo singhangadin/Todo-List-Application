@@ -1,32 +1,24 @@
 package `in`.singhangad.shared_data.datasource.remote.service
 
-import `in`.singhangad.shared_data.datasource.remote.entity.AllTaskResponse
-import `in`.singhangad.shared_data.datasource.remote.entity.TaskRequest
-import `in`.singhangad.shared_data.datasource.remote.entity.TaskResponse
+import `in`.singhangad.shared_data.datasource.remote.entity.ApiResponse
+import `in`.singhangad.shared_data.datasource.remote.entity.CreateTaskRequest
+import `in`.singhangad.shared_data.datasource.remote.entity.UpdateTaskRequest
 
 
 interface TodoService {
-//    @POST("/task")
-    suspend fun addTask(task: TaskRequest): TaskResponse
+    suspend fun addTask(task: CreateTaskRequest): ApiResponse
 
-//    @DELETE("/task/{taskId}")
-    suspend fun deleteTask(taskId: String)
+    suspend fun deleteTask(taskId: Long): ApiResponse
 
-//    @PUT("/task/{taskId}")
-    suspend fun updateTask(taskId: String, task: TaskRequest): TaskResponse
+    suspend fun updateTask(taskId: Long, task: UpdateTaskRequest): ApiResponse
 
-//    @GET("/task/{taskId}")
-    suspend fun getTaskWithId(taskId: String): TaskResponse
+    suspend fun getTaskWithId(taskId: Long): ApiResponse
 
-//    @DELETE("/task/{taskId}")
-    suspend fun removeTaskWithId(taskId: String)
+    suspend fun removeTaskWithId(taskId: Long): ApiResponse
 
-//    @PUT("/task/{taskId}")
-    suspend fun pinTask(taskId: String, task: TaskRequest): TaskResponse
+    suspend fun pinTask(taskId: Long, isPinned: Boolean): ApiResponse
 
-//    @PUT("/task/{taskId}")
-    suspend fun unPinTask(taskId: String, task: TaskRequest): TaskResponse
+    suspend fun unPinTask(taskId: Long, isPinned: Boolean): ApiResponse
 
-//    @GET("/task")
-    suspend fun getAllTasks(): AllTaskResponse
+    suspend fun getAllTasks(): ApiResponse
 }

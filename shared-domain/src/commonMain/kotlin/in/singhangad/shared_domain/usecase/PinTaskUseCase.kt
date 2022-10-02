@@ -8,6 +8,6 @@ class PinTaskUseCase constructor(private val taskRepositoryContract: TaskReposit
     }
 
     data class UseCaseParams(
-        val id: String
+        val id: Long
     )
 }

@@ -89,8 +89,8 @@ class TaskListFragment : Fragment(), ListItemClickListener {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
     }
 
-    private fun navigateToSaveTaskScreen(taskId: String?) {
-        val action = TaskListFragmentDirections.actionTaskListFragmentToSaveTaskFragment(taskId)
+    private fun navigateToSaveTaskScreen(taskId: Long?) {
+        val action = TaskListFragmentDirections.actionTaskListFragmentToSaveTaskFragment(taskId?:-1)
         findNavController().navigate(action)
     }
 

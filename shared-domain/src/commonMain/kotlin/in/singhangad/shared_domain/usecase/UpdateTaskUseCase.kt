@@ -9,7 +9,7 @@ class UpdateTaskUseCase constructor(private val taskRepositoryContract: TaskRepo
     }
 
     data class UseCaseParams(
-        val id: String,
+        val id: Long,
         val task: Task
     )
 }

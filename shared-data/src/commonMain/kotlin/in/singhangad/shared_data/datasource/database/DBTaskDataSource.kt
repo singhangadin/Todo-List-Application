@@ -17,13 +17,13 @@ class DBTaskDataSource constructor(private val taskDao: TaskDao): TaskDataSource
         return taskDao.getTaskWithId(task.taskId!!.toLong())
     }
 
-    override suspend fun getTaskWithId(id: String): Task? = taskDao.getTaskWithId(id.toLong())
+    override suspend fun getTaskWithId(id: Long): Task? = taskDao.getTaskWithId(id)
 
-    override suspend fun removeTaskWithId(id: String) = taskDao.removeTaskWithId(id.toLong())
+    override suspend fun removeTaskWithId(id: Long) = taskDao.removeTaskWithId(id)
 
-    override suspend fun pinTask(id: String) = taskDao.pinTask(id.toLong())
+    override suspend fun pinTask(id: Long) = taskDao.pinTask(id)
 
-    override suspend fun unPinTask(id: String) = taskDao.unPinTask(id.toLong())
+    override suspend fun unPinTask(id: Long) = taskDao.unPinTask(id)
 
     override suspend fun getAllTasks(): List<Task> = taskDao.getAllTasks()
 

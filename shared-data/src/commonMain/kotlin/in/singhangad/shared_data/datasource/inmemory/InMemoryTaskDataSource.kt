@@ -5,12 +5,12 @@ import `in`.singhangad.shared_domain.entity.Task
 import kotlinx.datetime.Clock
 
 class InMemoryTaskDataSource : TaskDataSource {
-    private var taskData = LinkedHashMap<String, Task>()
+    private var taskData = LinkedHashMap<Long, Task>()
 
     override suspend fun insertTask(task: Task): Task? {
         return kotlin.runCatching {
             val newTask = if (task.taskId == null) {
-                task.copy(Clock.System.now().toEpochMilliseconds().toString())
+                task.copy(Clock.System.now().toEpochMilliseconds())
             } else {
                 task
             }
@@ -38,7 +38,7 @@ class InMemoryTaskDataSource : TaskDataSource {
         }.getOrNull()
     }
 
-    override suspend fun getTaskWithId(id: String): Task? {
+    override suspend fun getTaskWithId(id: Long): Task? {
         try {
             return taskData[id]
         } catch (exception: Exception) {
@@ -46,7 +46,7 @@ class InMemoryTaskDataSource : TaskDataSource {
         }
     }
 
-    override suspend fun removeTaskWithId(id: String) {
+    override suspend fun removeTaskWithId(id: Long) {
         try {
             taskData.remove(id)
         } catch (exception: Exception) {
@@ -54,7 +54,7 @@ class InMemoryTaskDataSource : TaskDataSource {
         }
     }
 
-    override suspend fun pinTask(id: String) {
+    override suspend fun pinTask(id: Long) {
         try {
             taskData[id] = taskData[id]?.copy(isPinned = true)!!
             taskData[id]
@@ -63,7 +63,7 @@ class InMemoryTaskDataSource : TaskDataSource {
         }
     }
 
-    override suspend fun unPinTask(id: String) {
+    override suspend fun unPinTask(id: Long) {
         try {
             taskData[id] = taskData[id]?.copy(isPinned = false)!!
             taskData[id]

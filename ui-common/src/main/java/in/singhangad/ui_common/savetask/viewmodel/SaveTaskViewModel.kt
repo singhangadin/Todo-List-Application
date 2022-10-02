@@ -20,7 +20,7 @@ class SaveTaskViewModel constructor(
     private val getTaskUseCase: GetTaskUseCase,
     private val dispatcher: CoroutineDispatcher = Dispatchers.Default
 ): ViewModel() {
-    private val taskId = MutableLiveData<String>()
+    private val taskId = MutableLiveData<Long>()
     val taskTitle = MutableLiveData<String>()
     val taskDescription = MutableLiveData<String?>()
     val endDate = MutableLiveData<Date>()
@@ -31,12 +31,12 @@ class SaveTaskViewModel constructor(
         get() = _uiState
 
 
-    fun init(taskId: String?) {
-        if (taskId != null) {
+    fun init(taskId: Long) {
+        if (taskId != -1L) {
             this.taskId.value = taskId
             viewModelScope.launch(dispatcher) {
                 _uiState.emit(SaveTaskUIState.ShowLoader)
-                val taskResult = getTaskUseCase.invoke(taskId)
+                val taskResult = getTaskUseCase.invoke(taskId.toLong())
                 if (taskResult.isSuccess) {
                     val task = taskResult.getOrNull()!!
                     taskTitle.postValue(task.taskTitle)
@@ -61,7 +61,7 @@ class SaveTaskViewModel constructor(
                         UpsertTaskUseCase.UseCaseParams(
                             getUpsertTask(
                                 getTaskUseCase.invoke(
-                                    taskId.value ?: ""
+                                    taskId.value ?: 0
                                 ).getOrNull()
                             )
                         )
